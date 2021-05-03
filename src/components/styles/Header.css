@@ -1,0 +1,81 @@
+/* Add a black background color to the top navigation */
+.topnav {
+    
+    background-image: linear-gradient(-90deg, rgb(255, 60, 0), rgb(36, 36, 255));
+    overflow: hidden;
+    height: 70px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+  }
+  
+  /* Style the links inside the navigation bar */
+  .topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 23px 16px;
+    text-decoration: none;
+    font-size: 19px;
+    opacity: 0.8;
+    transition: 0.5s;
+    margin-top: -1px;
+    
+    
+  }
+
+  #headerText {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 23px 20px;
+    text-decoration: none;
+    font-size: 19px;
+    
+    margin-top: -15px;
+    
+    
+  }
+  
+  .topnav .homeText{
+    padding: 10px 26px;
+    margin-top: -6px;
+    border: none;
+    color: white;
+    float: left;
+    font-size: 19px;
+  }
+
+  .topnav .homeText:hover{
+    color: rgb(204, 48, 0);
+    
+  }
+
+  .topnav .logOutBtn{
+    padding: 10px 26px;
+    margin-top: -6px;
+    border: none;
+    background-color: transparent;
+    border: 2px solid rgb(255, 255, 255);
+    margin-right: 35px;
+    color: white;
+    
+    font-size: 19px;
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    float: right;
+  }
+
+  .topnav .logOutBtn:hover{
+    border: none;
+    background-color: rgba(255, 255, 255, 0.171);
+    
+    border: 2px solid white;
+    border-radius: 25px;
+    color: white;
+    
+    font-size: 19px;
+    text-decoration: none;
+  }

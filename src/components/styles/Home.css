@@ -1,0 +1,37 @@
+.homePage{
+    animation: fadeIn 1s ease-out;
+}
+
+#welcomeText{
+    color: white;
+}
+#descriptionText{
+    color: white;
+}
+
+#objectiveText{
+    color: white;
+    width: 1000px;
+    position: absolute;
+    left: 450px;
+}
+
+#homeImage{
+    position: absolute;
+    width: 800px;
+    left: 550px;
+    top: 550px;
+}
+
+body {background-color: #282c34;}
+
+@keyframes fadeIn{
+    0% {
+        opacity: 0;
+        transform: translateY(5%);
+    } 
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
