@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect, Route } from 'react-router-dom'
+import { Redirect, Route, Link } from 'react-router-dom'
 import { render } from 'react-dom';  // need to install react-dom on server
 import { Helmet } from 'react-helmet';
 import { ToastContainer, toast } from 'react-toastify';
@@ -10,6 +10,33 @@ import './styles/Titles.css';
 
 import './styles/UserLogin.css';
 
+//let isRegister = false;
+
+class UserLogin extends Component {
+
+    state = {
+        isRegister: false,
+    }
+
+    
+
+    
+    
+
+    registerUser = () => {
+        this.state.isRegister = true;
+
+
+    }
+
+    render() {
+        if(this.state.isRegister == true){
+            return <Redirect to='/register' />
+        }
+        
+
+
+        /*
 export default class UserLogin extends Component {
 
     constructor(props) {
@@ -63,7 +90,7 @@ export default class UserLogin extends Component {
       }
 
     
-    
+    */
     render() {
         
         const { navigate } = this.state.toLoadLogin;
@@ -88,7 +115,7 @@ export default class UserLogin extends Component {
                 <br></br>
 
                 <h1 className="welcome">Welcome to SMART!</h1>
-                <h2 className="welcome welcome2"> </h2>
+                
 
                 <input id="userName" type="text" placeholder="Username" value={this.state.username} onChange={e => this.updateUsername(e)}></input>
 
@@ -96,12 +123,24 @@ export default class UserLogin extends Component {
                 <br></br>
                 
 
+                <input id="password" type="password" placeholder="Password" ></input>
                 <input id="password" type="text" placeholder="Password" value={this.state.password} onChange={e => this.updatePassword(e)}></input>
                 
                 <br></br>
                 <br></br>
                 <br></br>
 
+                <button id="logInBtn">Login</button>
+
+                <h4 className="welcome welcome2">Don't have an account?</h4>
+
+                
+
+                {/*<button id="registerBtn" onClick={this.registerUser}>Register</button>*/}
+
+                <Link to="/register" id="registerBtn">Sign up</Link>
+
+                
                 <button id="logInBtn" onClick={e => this.handleClick(e)}>Login</button>
                 
 
@@ -111,5 +150,7 @@ export default class UserLogin extends Component {
     
     }
     
+    
 }
 
+export default UserLogin;
