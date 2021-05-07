@@ -44,7 +44,24 @@
     transition: width 0.4s ease-in-out;
 }
 
-#logInBtn{
+#userText{
+    position: relative;
+    left: -5px;
+    font-size: 20px;
+    color: white;
+}
+
+#passText{
+    position: relative;
+    left: -5px;
+    font-size: 20px;
+    color: white;
+}
+
+
+
+
+#createBtn{
     position: relative;
     padding: 10px 26px;
     top: auto;
@@ -65,41 +82,7 @@
 
 }
 
-#logInBtn:hover{
-    border: none;
-    background-color: rgba(13, 255, 45, 0.171);
-    
-    border: 2px solid white;
-    border-radius: 25px;
-    color: white;
-    
-    font-size: 19px;
-    text-decoration: none;
-}
-
-
-#registerBtn{
-    position: relative;
-    padding: 10px 26px;
-    top: auto;
-    border: none;
-    background-color: transparent;
-    border: 2px solid rgb(255, 255, 255);
-    left: auto;
-    color: white;
-    
-    
-    font-size: 19px;
-    text-decoration: none;
-    background-color: transparent;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    cursor: pointer;
-    
-
-}
-
-#registerBtn:hover{
+#createBtn:hover{
     border: none;
     background-color: rgba(13, 78, 255, 0.171);
     

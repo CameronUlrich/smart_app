@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect, Route, Link } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 import { render } from 'react-dom';  // need to install react-dom on server
 import { Helmet } from 'react-helmet';
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,34 +8,11 @@ import cookie from 'react-cookies';
 import './styles/Buttons.css';
 import './styles/Titles.css';
 
-import './styles/UserLogin.css';
+import './styles/UserRegister.css';
 
-//let isRegister = false;
-
-class UserLogin extends Component {
-
-    state = {
-        isRegister: false,
-    }
-
-    
-
-    
-    
-
-    registerUser = () => {
-        this.state.isRegister = true;
-
-
-    }
+class UserRegister extends Component {
 
     render() {
-        if(this.state.isRegister == true){
-            return <Redirect to='/register' />
-        }
-        
-
-
         /*
 
         if (this.state.toLoadLogin === true) {
@@ -57,13 +34,17 @@ class UserLogin extends Component {
                 <br></br>
                 <br></br>
 
-                <h1 className="welcome">Welcome to SMART!</h1>
+                <h1 className="welcome">Register</h1>
+                
+                <text id="userText">Username: </text>
                 
 
                 <input id="userName" type="text" placeholder="Username" ></input>
 
                 <br></br>
                 <br></br>
+
+                <text id="passText">Password:  </text>
                 
 
                 <input id="password" type="password" placeholder="Password" ></input>
@@ -72,15 +53,9 @@ class UserLogin extends Component {
                 <br></br>
                 <br></br>
 
-                <button id="logInBtn">Login</button>
-
-                <h4 className="welcome welcome2">Don't have an account?</h4>
+                <button id="createBtn">Create account</button>
 
                 
-
-                {/*<button id="registerBtn" onClick={this.registerUser}>Register</button>*/}
-
-                <Link to="/register" id="registerBtn">Sign up</Link>
 
                 
                 
@@ -94,4 +69,4 @@ class UserLogin extends Component {
     }
 }
 
-export default UserLogin;
+export default UserRegister;
