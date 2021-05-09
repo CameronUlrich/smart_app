@@ -20,8 +20,108 @@ app.get('/', (req, res) => {
   })
 })
 
+app.get('/cpu/:id', (req, res) => {
+  dbroutes.getCPUs(req.params.id)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.get('/gpu/:id', (req, res) => {
+  dbroutes.getGPUs(req.params.id)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.get('/disk/:id', (req, res) => {
+  dbroutes.getDisks(req.params.id)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.get('/memory/:id', (req, res) => {
+  dbroutes.getMemory(req.params.id)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.get('/network/:id', (req, res) => {
+  dbroutes.getNetwork(req.params.id)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
 app.get('/users', (req, res) => {
   dbroutes.userExists(req.body)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.post('/cpumetrics', (req, res) => {
+  dbroutes.retrieveCPUMetrics(req.body)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.post('/gpumetrics', (req, res) => {
+  dbroutes.retrieveGPUMetrics(req.body)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.post('/diskmetrics', (req, res) => {
+  dbroutes.retrieveDiskMetrics(req.body)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.post('/memorymetrics', (req, res) => {
+  dbroutes.retrieveMemoryMetrics(req.body)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.post('/networkmetrics', (req, res) => {
+  dbroutes.retrieveNetworkMetrics(req.body)
   .then(response => {
     res.status(200).send(response);
   })

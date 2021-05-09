@@ -16,50 +16,40 @@ class UserLogin extends Component {
 
     state = {
         isRegister: false,
+        toLoadLogin: false
     }
-
-    
-
-    
-    
 
     registerUser = () => {
         this.state.isRegister = true;
-
-
     }
 
-    render() {
-        if(this.state.isRegister == true){
-            return <Redirect to='/register' />
-        }
-        
-
-
-        /*
-export default class UserLogin extends Component {
+    loginUser = () => {
+        this.state.toLoadLogin = true;
+    }
 
     constructor(props) {
         super(props);
         this.state = {
             username: '',
             password: '',
-            toLoadLogin: false
         };
     }
 
+    // updates the username with whatever is in the username field
     updateUsername(e) {
         this.setState({
             username: e.target.value
         })
     }
 
+    // updates the password with whatever is in the password field
     updatePassword(e) {
         this.setState({
             password: e.target.value
         })
     }
 
+    // checks to see if user exists in db
     userLogin(username, password) {
         fetch('http://localhost:3001')
         .then(response => {
@@ -68,17 +58,9 @@ export default class UserLogin extends Component {
         .then(data => {
             data.forEach(row => {
                 if (row.username === username && row.password === password) {
-                    // console.log(true);
-                    // this.context.router.transitionTo('/home');
-                    
-                    this.state.toLoadLogin = true;
+                    this.loginUser();
                     console.log(this.state.toLoadLogin)
                 }
-                // else{
-                //     console.log(data);
-                //     console.log(username);
-                //     console.log(password);
-                // }
             });
         });
     }
@@ -89,13 +71,12 @@ export default class UserLogin extends Component {
         this.userLogin(this.state.username, this.state.password);
       }
 
-    
-    */
     render() {
-        
-        const { navigate } = this.state.toLoadLogin;
+        if(this.state.isRegister == true){
+            return <Redirect to='/register' />
+        }
 
-        if (navigate === true) {
+        if (this.state.toLoadLogin === true) {
             console.log(true);
             return <Redirect to='/home' />
         }
@@ -122,15 +103,13 @@ export default class UserLogin extends Component {
                 <br></br>
                 <br></br>
                 
-
-                <input id="password" type="password" placeholder="Password" ></input>
                 <input id="password" type="text" placeholder="Password" value={this.state.password} onChange={e => this.updatePassword(e)}></input>
                 
                 <br></br>
                 <br></br>
                 <br></br>
 
-                <button id="logInBtn">Login</button>
+                <button id="logInBtn" onClick={e => this.handleClick(e)}>Login</button>
 
                 <h4 className="welcome welcome2">Don't have an account?</h4>
 
@@ -141,7 +120,7 @@ export default class UserLogin extends Component {
                 <Link to="/register" id="registerBtn">Sign up</Link>
 
                 
-                <button id="logInBtn" onClick={e => this.handleClick(e)}>Login</button>
+                
                 
 
             </div>
@@ -149,7 +128,6 @@ export default class UserLogin extends Component {
         );
     
     }
-    
     
 }
 
