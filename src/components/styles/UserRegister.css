@@ -1,3 +1,26 @@
+#email {
+
+    position: relative;
+    left: auto;
+    top: auto;
+
+    width: 250px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 20px;
+    background-color: transparent;
+
+    color: white;
+    outline: none;
+    
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 10px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
 #userName {
 
     position: relative;

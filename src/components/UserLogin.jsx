@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect, Route, Link } from 'react-router-dom'
+import { Link, withRouter} from 'react-router-dom'
 import { render } from 'react-dom';  // need to install react-dom on server
 import { Helmet } from 'react-helmet';
 import { ToastContainer, toast } from 'react-toastify';
@@ -14,25 +14,18 @@ import './styles/UserLogin.css';
 
 class UserLogin extends Component {
 
-    state = {
-        isRegister: false,
-        toLoadLogin: false
-    }
-
-    registerUser = () => {
-        this.state.isRegister = true;
-    }
-
-    loginUser = () => {
-        this.state.toLoadLogin = true;
-    }
-
     constructor(props) {
         super(props);
         this.state = {
             username: '',
             password: '',
+            isRegister: false,
+            toLoadLogin: false,
         };
+    }
+
+    registerUser = () => {
+        this.state.isRegister = true;
     }
 
     // updates the username with whatever is in the username field
@@ -59,28 +52,27 @@ class UserLogin extends Component {
             data.forEach(row => {
                 if (row.username === username && row.password === password) {
                     this.loginUser();
+                    this.state.toLoadLogin = true;
                     console.log(this.state.toLoadLogin)
                 }
             });
+            if (!this.state.toLoadLogin){
+                alert("Wrong username or password. Please try again.");
+            }
         });
+        
     }
 
     handleClick(e) {
-        e.preventDefault();
         console.log('The button was clicked.');
         this.userLogin(this.state.username, this.state.password);
-      }
+    }
+
+    loginUser = () => {
+        this.props.history.push('/home');
+    }
 
     render() {
-        if(this.state.isRegister == true){
-            return <Redirect to='/register' />
-        }
-
-        if (this.state.toLoadLogin === true) {
-            console.log(true);
-            return <Redirect to='/home' />
-        }
-        
         
 
         return (
@@ -131,4 +123,4 @@ class UserLogin extends Component {
     
 }
 
-export default UserLogin;
+export default withRouter(UserLogin);
