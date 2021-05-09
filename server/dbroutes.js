@@ -89,6 +89,19 @@ const userExists = (body) => {
   })
 }
 
+const createUser = (body) => {
+  return new Promise(function(resolve, reject) {
+    const { email, password, username } = body
+
+    pool.query('INSERT INTO "User" ("email", "password", "username") VALUES ($1, $2, $3) RETURNING *', [email, password, username], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(results.rows)
+    })
+  })
+}
+
 const createNewMachine = (body) => {
   return new Promise(function(resolve, reject) {
     const { make, os, model } = body
@@ -136,6 +149,7 @@ module.exports = {
   getDisks,
   getMemory,
   getNetwork,
+  createUser,
   createNewMachine,
   retrieveCPUMetrics,
   userExists,
