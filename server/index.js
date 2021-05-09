@@ -80,6 +80,16 @@ app.get('/users', (req, res) => {
   })
 })
 
+app.post('/createUser', (req, res) => {
+  dbroutes.createUser(req.body)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
 app.post('/cpumetrics', (req, res) => {
   dbroutes.retrieveCPUMetrics(req.body)
   .then(response => {
