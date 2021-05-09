@@ -110,7 +110,7 @@ class UserRegister extends Component {
                 <br></br>
                 <br></br>
 
-                <h1 className="welcome">Register</h1>
+                <h1 id="registerText" className="welcome">Register</h1>
 
                 <text id="userText">Email: </text>
                 
