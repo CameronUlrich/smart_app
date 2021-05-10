@@ -17,11 +17,13 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently --kill-others \"npm run startup\" \"npm run server\"",
+    "startup": "react-scripts start",
     "dev": "concurrently --kill-others \"npm run start\" \"npm run server\"",
     "server": "(cd server && npm i && npm run start)",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage",
+    "testing": "concurrently --kill-others \"npm run server\" \"npm test\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -45,5 +47,4 @@
   "devDependencies": {
     "concurrently": "^6.0.2"
   }
-  
 }

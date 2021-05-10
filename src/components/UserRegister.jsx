@@ -94,7 +94,6 @@ class UserRegister extends Component {
         }
     }
     
-
     render() {
         
 
@@ -143,8 +142,6 @@ class UserRegister extends Component {
             </div>
 
         );
-
-        
     
     }
 }
