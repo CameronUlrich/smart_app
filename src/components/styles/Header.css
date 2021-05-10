@@ -38,11 +38,11 @@
   
   .topnav .homeText{
     padding: 10px 26px;
-    margin-top: -6px;
+    margin-top: -12px;
     border: none;
     color: white;
     float: left;
-    font-size: 19px;
+    font-size: 30px;
   }
 
   .topnav .homeText:hover{
