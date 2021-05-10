@@ -30,7 +30,7 @@ class Header extends Component {
                     <ul>
                         
 
-                        <Link to="/home" className="homeText">SMART</Link>
+                        <Link to="/home" id= "smartText" className="homeText">SMART</Link>
                         <Link to="/" className="logOutBtn">Log Out</Link>
                         
                     </ul>
