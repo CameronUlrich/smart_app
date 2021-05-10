@@ -87,7 +87,7 @@ class UserLogin extends Component {
                 <br></br>
                 <br></br>
 
-                <h1 className="welcome">Welcome to SMART!</h1>
+                <h1 id="welcomeText" className="welcome">Welcome to SMART!</h1>
                 
 
                 <input id="userName" type="text" placeholder="Username" value={this.state.username} onChange={e => this.updateUsername(e)}></input>
@@ -103,7 +103,7 @@ class UserLogin extends Component {
 
                 <button id="logInBtn" onClick={e => this.handleClick(e)}>Login</button>
 
-                <h4 className="welcome welcome2">Don't have an account?</h4>
+                <h4 id="dontHaveText" className="welcome welcome2">Don't have an account?</h4>
 
                 
 

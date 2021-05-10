@@ -1,3 +1,13 @@
+#welcomeText{
+    animation: fadeIn 1s ease-out;
+
+}
+
+#dontHaveText{
+    animation: fadeIn 1s ease-out;
+
+}
+
 #userName {
 
     position: relative;
@@ -19,6 +29,7 @@
     padding: 12px 20px 12px 10px;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
+    animation: fadeIn 1s ease-out;
 }
 
 #password {
@@ -42,6 +53,7 @@
     padding: 12px 20px 12px 10px;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
+    animation: fadeIn 1s ease-out;
 }
 
 #logInBtn{
@@ -61,6 +73,7 @@
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
     cursor: pointer;
+    animation: fadeIn 1s ease-out;
     
 
 }
@@ -95,6 +108,7 @@
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
     cursor: pointer;
+    animation: fadeIn 1s ease-out;
     
 
 }
@@ -109,4 +123,15 @@
     
     font-size: 19px;
     text-decoration: none;
+}
+
+@keyframes fadeIn{
+    0% {
+        opacity: 0;
+        transform: translateY(5%);
+    } 
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
 }
