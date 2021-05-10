@@ -60,7 +60,6 @@ class UserLogin extends Component {
                 alert("Wrong username or password. Please try again.");
             }
         });
-        
     }
 
     handleClick(e) {
