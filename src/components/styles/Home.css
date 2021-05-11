@@ -48,7 +48,7 @@
 }
 
 #diskDiv{
-    width: 500px;
+    width: 400px;
     height: 250px;
     border: 5px solid white;
     background-color: rgba(36, 36, 255, 0.315);
@@ -139,25 +139,35 @@
 
 }
 
-#diskCurrentText{
+#diskUsedText{
+    font-size: 50px;
     
     position: relative;
-    top: -90px;
-    left: -15px;
+    top: -80px;
+    left: -65px;
 
 }
 
-#diskPeakText{
+#diskTotalText{
+    font-size: 50px;
     position: relative;
-    top: -150px;
+    top: -130px;
+    left: -40px;
+
+}
+
+#diskAvailText{
+    font-size: 50px;
+    position: relative;
+    top: -180px;
     left: -55px;
 
 }
 
 #refreshBtn{
-    position: relative;
-    top: -325px;
-    left: -365px;
+    position:absolute;
+    left: 50px;
+    top: 750px;
 
     outline: none;
     padding: 10px 26px;
@@ -190,6 +200,31 @@
     text-decoration: none;
 }
 
+#processesText{
+    font-size: 50px;
+    position: absolute;
+    top: 50px;
+    right: 275px;
+    animation: fadeIn 1s ease-out;
+}
+
+#dropDownText{
+    outline: none;
+    color: white;
+    top: 735px;
+    left: 520px;
+    position: absolute;
+    font-size: 35px;
+    animation: fadeIn 1s ease-out;
+}
+
+#dropDownOptions{
+    outline: none;
+    top: 760px;
+    position: absolute;
+    font-size: 35px;
+    animation: fadeIn 1s ease-out;
+}
 
 body {background-color: #282c34;}
 
