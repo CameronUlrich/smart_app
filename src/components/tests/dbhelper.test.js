@@ -24,3 +24,4 @@ test("Test Deleting from 'User' table.", () => {
         expect(data).toEqual("user deleted");
     })
 })
+

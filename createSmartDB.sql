@@ -1,3 +1,13 @@
+DROP TABLE public."ActiveProcesses";
+DROP TABLE public."Disk";
+DROP TABLE public."Network";
+DROP TABLE public."CPU";
+DROP TABLE public."GPU";
+DROP TABLE public."Memory";
+DROP TABLE public."UserMachine";
+DROP TABLE public."User";
+DROP TABLE public."Machine";
+
 CREATE TABLE public."Machine"
 (
     "machineID" character varying(40) NOT NULL,
@@ -78,7 +88,7 @@ CREATE TABLE public."GPU"
     "gpuModel" character varying(40),
     "gpuSpeed" integer,
     "gpuTemp" integer,
-    "gpuMemorySize" double precision,
+    "gpuMemorySize" integer,
     "gpuMemoryUsed" double precision,
     "dateTime" timestamp without time zone NOT NULL,
     PRIMARY KEY ("gpuID", "dateTime"),
@@ -162,8 +172,6 @@ CREATE TABLE public."ActiveProcesses"
     "processName" character varying(20),
     "cpuPercent" double precision,
     "memoryPecent" double precision,
-    "diskPercent" double precision,
-    "networkPercent" double precision,
     "dateTime" timestamp without time zone NOT NULL,
     PRIMARY KEY ("processID", "dateTime"),
     CONSTRAINT "ProcessFK" FOREIGN KEY ("machineID")

@@ -19,14 +19,12 @@ async function registerMachine() {
         machineos.platform, 
         machinedata.model);
       
-      
-  
     } catch (e) {
       console.log(e)
     }
   }
 
-
+// retrieves all of the system information 
 async function retrieveSystemMetrics() {
   try {
     const machinedata = await si.system();
@@ -37,7 +35,6 @@ async function retrieveSystemMetrics() {
     const processdata = await si.processes();
     const servicedata = await si.services();
     const diskdata = await si.fsSize();
-    const networkdata = await si.networkInterfaces();
 
     console.log('================================================');
     console.log('=============Metric Collection Begin============');
@@ -67,13 +64,14 @@ async function retrieveSystemMetrics() {
         gpudata.controllers[0].model, 
         gpudata.controllers[0].clockCore/1.0, 
         gpudata.controllers[0].temperatureGpu/1.0, 
-        gpudata.controllers[0].memoryTotal/1024.0);
+        gpudata.controllers[0].memoryTotal/1024.0,
+        gpudata.controllers[0].memoryUsed/1024.0);
     console.log('GPU Information:');
     console.log('- manufucturer: ' + gpudata.controllers[0].vendor);
     console.log('- model: ' + gpudata.controllers[0].model);
     console.log('- temp: ' + gpudata.controllers[0].temperatureGpu);
-    console.log('- speed: ' + gpudata.controllers[0].clockCore);
-    console.log('- memory: ' + gpudata.controllers[0].memoryUsed);
+    console.log('- core clock: ' + gpudata.controllers[0].clockCore);
+    console.log('- memory: ' + gpudata.controllers[0].memoryUsed + " GB");
     console.log('...\n');
 
     db.retrieveMemoryMetrics(machinedata.uuid,
@@ -84,7 +82,6 @@ async function retrieveSystemMetrics() {
     console.log('- total: ' + memorydata.total/1073741824.0 + " GB");
     console.log('- free: ' + memorydata.free/1073741824.0 + " GB");
     console.log('- used: ' + memorydata.used/1073741824.0 + " GB");
-    console.log('- cached: ' + memorydata.cached);
     console.log('...\n');
 
     for (var i = 0; i < diskdata.length; i ++){
@@ -100,20 +97,25 @@ async function retrieveSystemMetrics() {
         console.log('- used: ' + diskdata[i].used/1073741824.0 + " GB");
         console.log('...\n');
     }
+    
 
-    console.log('Network Information:');
-    console.log('- card: ' + networkdata[1].ifaceName);
-    console.log('- upload: ' + networkdata[1].operstate);
-    console.log('- download: ' + networkdata[1].speed);
-    console.log('...\n');
+    // console.log('Network Information:');
+    // console.log('- card: ' + networkdata[1].ifaceName);
+    // console.log('- upload: ' + networkdata[1].operstate);
+    // console.log('- download: ' + networkdata[1].speed);
+    // console.log('...\n');
 
-    console.log('Process Information:');
-    for (var i = 0; processdata.list.length; i++) {
-        if (processdata.list[i].cpu > 0.1) {
-            console.log("- process " + i + ": name: " + processdata.list[i].name + 
-                " || cpu usage: " + processdata.list[i].cpu + " || memory usage: " + processdata.list[i].mem);
-        }
-    }
+    // console.log('Process Information:');
+    // var count = 0;
+    // for (var i = 0; processdata.list.length; i++) {
+    //     if(count < 15){
+    //         if (processdata.list[i].cpu > 0.1) {
+    //             console.log("- process " + count + ": name: " + processdata.list[i].name + 
+    //                 " || cpu usage: " + processdata.list[i].cpu + " || memory usage: " + processdata.list[i].mem);
+    //             count++;
+    //         }
+    //     }
+    // }
 
 
 
@@ -128,7 +130,7 @@ async function retrieveSystemMetrics() {
   }
 }
 
-//registerMachine();
+registerMachine();
 setInterval(function() {
     retrieveSystemMetrics();
   }, 10000);
