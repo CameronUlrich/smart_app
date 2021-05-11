@@ -90,7 +90,17 @@ app.post('/createUser', (req, res) => {
   })
 })
 
-app.post('/cpumetrics', (req, res) => {
+app.post('/createMachine', (req, res) => {
+  dbroutes.createNewMachine(req.body)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.post('/cpuMetrics', (req, res) => {
   dbroutes.retrieveCPUMetrics(req.body)
   .then(response => {
     res.status(200).send(response);
@@ -100,7 +110,7 @@ app.post('/cpumetrics', (req, res) => {
   })
 })
 
-app.post('/gpumetrics', (req, res) => {
+app.post('/gpuMetrics', (req, res) => {
   dbroutes.retrieveGPUMetrics(req.body)
   .then(response => {
     res.status(200).send(response);
@@ -110,7 +120,7 @@ app.post('/gpumetrics', (req, res) => {
   })
 })
 
-app.post('/diskmetrics', (req, res) => {
+app.post('/diskMetrics', (req, res) => {
   dbroutes.retrieveDiskMetrics(req.body)
   .then(response => {
     res.status(200).send(response);
@@ -120,7 +130,7 @@ app.post('/diskmetrics', (req, res) => {
   })
 })
 
-app.post('/memorymetrics', (req, res) => {
+app.post('/memoryMetrics', (req, res) => {
   dbroutes.retrieveMemoryMetrics(req.body)
   .then(response => {
     res.status(200).send(response);
@@ -130,7 +140,7 @@ app.post('/memorymetrics', (req, res) => {
   })
 })
 
-app.post('/networkmetrics', (req, res) => {
+app.post('/networkMetrics', (req, res) => {
   dbroutes.retrieveNetworkMetrics(req.body)
   .then(response => {
     res.status(200).send(response);

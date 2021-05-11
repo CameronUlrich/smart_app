@@ -1,4 +1,5 @@
 const helper = require("../services/dbhelper");
+const helperclient = require("../../../client/services/dbhelper")
 
 const email = "test", username = "test", password = "test";
 

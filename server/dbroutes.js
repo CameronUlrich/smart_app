@@ -104,29 +104,45 @@ const createUser = (body) => {
 
 const createNewMachine = (body) => {
   return new Promise(function(resolve, reject) {
-    const { make, os, model } = body
+    const { id, manufacturer, model } = body
 
-    pool.query('INSERT INTO "Machine" ("machineMake", "machineOS", "machineModel") VALUES ($1, $2, $3) RETURNING *', [make, os, model], (error, results) => {
+    pool.query('INSERT INTO "Machine" ("machineID", "machineMake", "machineOS", "machineModel", "dateTime") VALUES ($1, $2, $3, $4, to_timestamp($5/1000.0)) RETURNING *', [id, manufacturer, model, Date.now()], (error, results) => {
       if (error) {
         reject(error)
       }
-      resolve('new machine added!')
+      console.log(results);
+      resolve(results.rows)
     })
   })
 }
 
 const retrieveCPUMetrics = (body) => {
   return new Promise(function(resolve, reject) {
-    const { machineid, cpumodel, cputemp, cpuspeed, cpupercent, cpucore } = body
+    const { machineid, model, speed, percent, corecount } = body
 
-    pool.query('INSERT INTO "CPU" ("machineID", "cpuModel", "cpuTemp", "cpuSpeed", "cpuPercent", "cpuCoreCount") VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [machineid, cpumodel, cputemp, cpuspeed, cpupercent, cpucore], (error, results) => {
+    pool.query('INSERT INTO "CPU" ("machineID", "cpuModel", "cpuSpeed", "cpuPercent", "cpuCoreCount", "dateTime") VALUES ($1, $2, $3, $4, $5, to_timestamp($6/1000.0)) RETURNING *', [machineid, model, speed, percent, corecount, Date.now()], (error, results) => {
       if (error) {
         reject(error)
       }
-      resolve('new metrics collected!')
+      console.log(results);
+      resolve(results.rows)
     })
   })
 }
+
+const retrieveGPUMetrics = (body) => {
+  return new Promise(function(resolve, reject) {
+    const { machineid, gpumodel, gputemp, gpuspeed, gpupercent, gpumemory } = body
+
+    pool.query('INSERT INTO "GPU" ("machineID", "gpuModel", "gpuTemp", "gpuSpeed", "gpuPercent", "gpuMemory") VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [machineid, gpumodel, gputemp, gpuspeed, gpupercent, gpumemory], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(results.rows)
+    })
+  })
+}
+
 
 
 const deleteUser = (userId) => {
@@ -152,6 +168,7 @@ module.exports = {
   createUser,
   createNewMachine,
   retrieveCPUMetrics,
+  retrieveGPUMetrics,
   userExists,
   deleteUser,
 }
