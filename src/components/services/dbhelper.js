@@ -14,8 +14,6 @@ function createUser(email, username, password) {
 }
 
 function deleteUser(username) {
-
-
     return fetch(`http://localhost:3001/deleteUser/${username}`, {
         method: 'DELETE',
     })

@@ -3,7 +3,7 @@ const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
   host: 'smartdb.cupw72i7x6pa.us-east-1.rds.amazonaws.com',
-  database: 'smart',
+  database: 'smarttest',
   password: 'zachary510',
   port: 5432,
 });
@@ -104,29 +104,67 @@ const createUser = (body) => {
 
 const createNewMachine = (body) => {
   return new Promise(function(resolve, reject) {
-    const { make, os, model } = body
-
-    pool.query('INSERT INTO "Machine" ("machineMake", "machineOS", "machineModel") VALUES ($1, $2, $3) RETURNING *', [make, os, model], (error, results) => {
+    const { id, manufacturer, os, model } = body
+    console.log(body);
+    pool.query('INSERT INTO "Machine" ("machineID", "machineMake", "machineOS", "machineModel", "dateTime") VALUES ($1, $2, $3, $4, to_timestamp($5/1000.0)) RETURNING *', [id, manufacturer,os , model, Date.now()], (error, results) => {
       if (error) {
         reject(error)
       }
-      resolve('new machine added!')
+      console.log(results);
+      resolve(results.rows)
     })
   })
 }
 
 const retrieveCPUMetrics = (body) => {
   return new Promise(function(resolve, reject) {
-    const { machineid, cpumodel, cputemp, cpuspeed, cpupercent, cpucore } = body
-
-    pool.query('INSERT INTO "CPU" ("machineID", "cpuModel", "cpuTemp", "cpuSpeed", "cpuPercent", "cpuCoreCount") VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [machineid, cpumodel, cputemp, cpuspeed, cpupercent, cpucore], (error, results) => {
+    const { id, model, speed, percent, corecount } = body
+    pool.query('INSERT INTO "CPU" ("machineID", "cpuModel", "cpuSpeed", "cpuPercent", "cpuCoreCount", "dateTime") VALUES ($1, $2, $3, $4, $5, to_timestamp($6/1000.0)) RETURNING *', [id, model, speed, percent, corecount, Date.now()], (error, results) => {
       if (error) {
         reject(error)
       }
-      resolve('new metrics collected!')
+      resolve(results.rows)
     })
   })
 }
+
+const retrieveGPUMetrics = (body) => {
+  return new Promise(function(resolve, reject) {
+    const { id, model, speed, temp, memory } = body
+    
+    pool.query('INSERT INTO "GPU" ("machineID", "gpuModel", "gpuSpeed", "gpuTemp", "gpuMemorySize", "dateTime") VALUES ($1, $2, $3, $4, $5, to_timestamp($6/1000.0)) RETURNING *', [id, model, speed, temp, memory, Date.now()], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(results.rows)
+    })
+  })
+}
+
+const retrieveDiskMetrics = (body) => {
+  return new Promise(function(resolve, reject) {
+    const { id, type, size, free, used } = body;
+    pool.query('INSERT INTO "Disk" ("machineID", "diskType", "diskSize", "diskFree", "diskUsed", "dateTime") VALUES ($1, $2, $3, $4, $5, to_timestamp($6/1000.0)) RETURNING *', [id, type, size, free, used, Date.now()], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(results.rows)
+    })
+  })
+}
+
+const retrieveMemoryMetrics = (body) => {
+  return new Promise(function(resolve, reject) {
+    const { id, size, free, used } = body;
+    pool.query('INSERT INTO "Memory" ("machineID", "memorySize", "memoryFree", "memoryUsed", "dateTime") VALUES ($1, $2, $3, $4, to_timestamp($5/1000.0)) RETURNING *', [id, size, free, used, Date.now()], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(results.rows)
+    })
+  })
+}
+
 
 
 const deleteUser = (userId) => {
@@ -152,6 +190,9 @@ module.exports = {
   createUser,
   createNewMachine,
   retrieveCPUMetrics,
+  retrieveGPUMetrics,
+  retrieveDiskMetrics,
+  retrieveMemoryMetrics,
   userExists,
   deleteUser,
 }
