@@ -17,6 +17,8 @@ class Home extends Component {
                     <style>{'body { background-color: #282c34; }'}</style>
                 </Helmet>
 
+                
+
                 <div id="cpuDiv">
                     <h1 id="cpuText" className="welcome">CPU</h1>
 
@@ -52,12 +54,31 @@ class Home extends Component {
                 <div id="diskDiv">
                     <h1 id="diskText" className="welcome">Disk</h1>
 
-                    <h1 id="diskCurrentText" className="welcome">Current: 32%</h1>
+                    <h1 id="diskUsedText" className="welcome">Used: 32%</h1>
 
-                    <h1 id="diskPeakText" className="welcome">Peak: 64%</h1>
+                    <h1 id="diskTotalText" className="welcome">Total: 1000G</h1>
+
+                    <h1 id="diskAvailText" className="welcome">Avail: 428G</h1>
                 </div>
 
-                <button id="refreshBtn" >Refresh</button>
+                <button id="refreshBtn">Refresh</button>
+
+                <h1 id="dropDownText" for="dropDownText">Refresh Rate (in seconds): </h1>
+
+                <select name="dropDownOptions" id="dropDownOptions">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5" selected>5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+
+                <h1 id="processesText" className="welcome">Processes</h1>
                 
             </div>
         );
