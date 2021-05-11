@@ -20,13 +20,13 @@ function retrieveCPUMetrics (id, model, speed, percent, corecount) {
     })
 }
 
-function retrieveGPUMetrics (id, model, speed, temp, memory) {
+function retrieveGPUMetrics (id, model, speed, temp, memorysize, memoryused) {
     return fetch('http://localhost:3001/gpuMetrics', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({id, model, speed, temp, memory}),
+        body: JSON.stringify({id, model, speed, temp, memorysize, memoryused}),
     })
 }
 

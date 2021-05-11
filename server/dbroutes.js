@@ -3,7 +3,7 @@ const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
   host: 'smartdb.cupw72i7x6pa.us-east-1.rds.amazonaws.com',
-  database: 'smarttest',
+  database: 'test',
   password: 'zachary510',
   port: 5432,
 });
@@ -104,14 +104,11 @@ const createUser = (body) => {
 
 const createNewMachine = (body) => {
   return new Promise(function(resolve, reject) {
-    const { id, manufacturer, os, model } = body
-    console.log(body);
+    const { id, manufacturer, os, model } = body;
     pool.query('INSERT INTO "Machine" ("machineID", "machineMake", "machineOS", "machineModel", "dateTime") VALUES ($1, $2, $3, $4, to_timestamp($5/1000.0)) RETURNING *', [id, manufacturer,os , model, Date.now()], (error, results) => {
       if (error) {
         reject(error)
       }
-      console.log(results);
-      resolve(results.rows)
     })
   })
 }
@@ -130,9 +127,9 @@ const retrieveCPUMetrics = (body) => {
 
 const retrieveGPUMetrics = (body) => {
   return new Promise(function(resolve, reject) {
-    const { id, model, speed, temp, memory } = body
-    
-    pool.query('INSERT INTO "GPU" ("machineID", "gpuModel", "gpuSpeed", "gpuTemp", "gpuMemorySize", "dateTime") VALUES ($1, $2, $3, $4, $5, to_timestamp($6/1000.0)) RETURNING *', [id, model, speed, temp, memory, Date.now()], (error, results) => {
+    const { id, model, speed, temp, memorysize, memoryused } = body
+    console.log(body);
+    pool.query('INSERT INTO "GPU" ("machineID", "gpuModel", "gpuSpeed", "gpuTemp", "gpuMemorySize", "gpuMemoryUsed", "dateTime") VALUES ($1, $2, $3, $4, $5, $6, to_timestamp($7/1000.0)) RETURNING *', [id, model, speed, temp, memorysize, memoryused, Date.now()], (error, results) => {
       if (error) {
         reject(error)
       }
