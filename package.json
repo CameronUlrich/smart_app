@@ -21,6 +21,8 @@
     "startup": "react-scripts start",
     "dev": "concurrently --kill-others \"npm run start\" \"npm run server\"",
     "server": "(cd server && npm i && npm run start)",
+    "client": "(cd client && npm i && npm run start)",
+    "testclient": "concurrently --kill-others \"npm run server\" \"npm run client\"",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage",
     "testing": "concurrently --kill-others \"npm run server\" \"npm test\"",

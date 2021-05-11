@@ -14,8 +14,12 @@ async function registerMachine() {
     try {
       const machinedata = await si.system();
       const machineos = await si.osInfo();
-      const register = await db.registerMachine(machinedata.uuid, machinedata.manufacturer, machineos.platform, machinedata.model);
-      console.log(register);
+      db.registerMachine(machinedata.uuid, 
+        machinedata.manufacturer, 
+        machineos.platform, 
+        machinedata.model);
+      
+      
   
     } catch (e) {
       console.log(e)
@@ -46,8 +50,10 @@ async function retrieveSystemMetrics() {
     console.log('...\n');
 
 
-    const retrieveCPU = db.retrieveCPUMetrics(machinedata.uuid, cpudata.manufacturer + " " + cpudata.brand,  cpudata.speed, cpuload.currentLoad, cpudata.physicalCores)
-    console.log(retrieveCPU);
+    db.retrieveCPUMetrics(machinedata.uuid, 
+        cpudata.manufacturer + " " + cpudata.brand,  
+        cpudata.speed, cpuload.currentLoad, 
+        cpudata.physicalCores)
     console.log('CPU Information:');
     console.log('- manufacturer: ' + cpudata.manufacturer);
     console.log('- brand: ' + cpudata.brand);
@@ -57,7 +63,11 @@ async function retrieveSystemMetrics() {
     console.log('- physical cores: ' + cpudata.physicalCores);
     console.log('...\n');
     
-
+    db.retrieveGPUMetrics(machinedata.uuid, 
+        gpudata.controllers[0].model, 
+        gpudata.controllers[0].clockCore/1.0, 
+        gpudata.controllers[0].temperatureGpu/1.0, 
+        gpudata.controllers[0].memoryTotal/1024.0);
     console.log('GPU Information:');
     console.log('- manufucturer: ' + gpudata.controllers[0].vendor);
     console.log('- model: ' + gpudata.controllers[0].model);
@@ -66,6 +76,10 @@ async function retrieveSystemMetrics() {
     console.log('- memory: ' + gpudata.controllers[0].memoryUsed);
     console.log('...\n');
 
+    db.retrieveMemoryMetrics(machinedata.uuid,
+        memorydata.total/1073741824.0,
+        memorydata.free/1073741824.0,
+        memorydata.used/1073741824.0)
     console.log('Memory Information:');
     console.log('- total: ' + memorydata.total/1073741824.0 + " GB");
     console.log('- free: ' + memorydata.free/1073741824.0 + " GB");
@@ -74,6 +88,11 @@ async function retrieveSystemMetrics() {
     console.log('...\n');
 
     for (var i = 0; i < diskdata.length; i ++){
+        db.retrieveDiskMetrics(machinedata.uuid, 
+            diskdata[i].type, 
+            diskdata[i].size/1073741824.0, 
+            diskdata[i].free/1073741824.0, 
+            diskdata[i].used/1073741824.0);
         console.log('Disk ' + i  + ' Information:');
         console.log('- type: ' + diskdata[i].type);
         console.log('- size: ' + diskdata[i].size/1073741824.0 + " GB");
@@ -88,6 +107,15 @@ async function retrieveSystemMetrics() {
     console.log('- download: ' + networkdata[1].speed);
     console.log('...\n');
 
+    console.log('Process Information:');
+    for (var i = 0; processdata.list.length; i++) {
+        if (processdata.list[i].cpu > 0.1) {
+            console.log("- process " + i + ": name: " + processdata.list[i].name + 
+                " || cpu usage: " + processdata.list[i].cpu + " || memory usage: " + processdata.list[i].mem);
+        }
+    }
+
+
 
     console.log('================================================');
     console.log('==============Metric Collection End=============');
@@ -100,7 +128,7 @@ async function retrieveSystemMetrics() {
   }
 }
 
-registerMachine();
+//registerMachine();
 setInterval(function() {
     retrieveSystemMetrics();
   }, 10000);
