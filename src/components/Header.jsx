@@ -17,6 +17,7 @@ library.add( faUser, faUsers, faUserFriends, faCog, faUserShield, faHome, faSign
 
 class Header extends Component {
 
+    /* istanbul ignore next */
     resetCookies = () => {
         cookie.save('_is_logged_in', false, {path: '/'});
         //cookie.remove('_user_email', {path: '/'});

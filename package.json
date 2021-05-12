@@ -24,7 +24,7 @@
     "client": "(cd client && npm i && npm run start)",
     "testclient": "concurrently --kill-others \"npm run server\" \"npm run client\"",
     "build": "react-scripts build",
-    "test": "react-scripts test --coverage",
+    "test": "react-scripts test --coverage --watchAll=false",
     "testing": "concurrently --kill-others \"npm run server\" \"npm test\"",
     "eject": "react-scripts eject"
   },
@@ -47,6 +47,8 @@
     ]
   },
   "devDependencies": {
-    "concurrently": "^6.0.2"
+    "concurrently": "^6.0.2",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2"
   }
 }
