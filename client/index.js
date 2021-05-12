@@ -1,6 +1,8 @@
 const si = require('systeminformation');
 const db = require('./services/dbhelper');
 
+var round = 0;
+
 // promises style - new since version 3
 function retrieveMetrics(){
     si.cpu().then(data => {console.log(data)});
@@ -25,7 +27,7 @@ async function registerMachine() {
   }
 
 // retrieves all of the system information 
-async function retrieveSystemMetrics() {
+async function retrieveSystemMetrics(round) {
   try {
     const machinedata = await si.system();
     const cpudata = await si.cpu();
@@ -35,9 +37,10 @@ async function retrieveSystemMetrics() {
     const processdata = await si.processes();
     const servicedata = await si.services();
     const diskdata = await si.fsSize();
+    const diskname = await si.diskLayout();
 
     console.log('================================================');
-    console.log('=============Metric Collection Begin============');
+    console.log('===========Metric Collection Round ' + round +'============');
     console.log('================================================\n');
 
     console.log('Machine Information:');
@@ -86,12 +89,13 @@ async function retrieveSystemMetrics() {
 
     for (var i = 0; i < diskdata.length; i ++){
         db.retrieveDiskMetrics(machinedata.uuid, 
-            diskdata[i].type, 
+            diskname[i].type, 
             diskdata[i].size/1073741824.0, 
             diskdata[i].free/1073741824.0, 
             diskdata[i].used/1073741824.0);
         console.log('Disk ' + i  + ' Information:');
-        console.log('- type: ' + diskdata[i].type);
+        console.log('- name: ' + diskname[i].name);
+        console.log('- type: ' + diskname[i].type);
         console.log('- size: ' + diskdata[i].size/1073741824.0 + " GB");
         console.log('- free: ' + diskdata[i].available/1073741824.0 + " GB");
         console.log('- used: ' + diskdata[i].used/1073741824.0 + " GB");
@@ -120,7 +124,7 @@ async function retrieveSystemMetrics() {
 
 
     console.log('================================================');
-    console.log('==============Metric Collection End=============');
+    console.log('===========Metric Collection Round ' + round +'============');
     console.log('================================================\n');
 
     
@@ -132,5 +136,6 @@ async function retrieveSystemMetrics() {
 
 registerMachine();
 setInterval(function() {
-    retrieveSystemMetrics();
+    retrieveSystemMetrics(round);
+    round++;
   }, 10000);

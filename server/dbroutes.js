@@ -128,7 +128,6 @@ const retrieveCPUMetrics = (body) => {
 const retrieveGPUMetrics = (body) => {
   return new Promise(function(resolve, reject) {
     const { id, model, speed, temp, memorysize, memoryused } = body
-    console.log(body);
     pool.query('INSERT INTO "GPU" ("machineID", "gpuModel", "gpuSpeed", "gpuTemp", "gpuMemorySize", "gpuMemoryUsed", "dateTime") VALUES ($1, $2, $3, $4, $5, $6, to_timestamp($7/1000.0)) RETURNING *', [id, model, speed, temp, memorysize, memoryused, Date.now()], (error, results) => {
       if (error) {
         reject(error)
