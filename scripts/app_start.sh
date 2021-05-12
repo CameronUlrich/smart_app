@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /home/ec2-user/server/src
+cd /home/ec2-user/server
 pm2 start npm --name "smartapp" -- start
 pm2 startup
 pm2 save
