@@ -88,7 +88,7 @@ class UserLogin extends Component {
                 <h1 id="welcomeText" className="welcome">Welcome to SMART!</h1>
                 
 
-                <input id="userName" type="text" placeholder="Username" value={this.state.username} onChange={e => this.changeState(e)}></input>
+                <input id="username" type="text" placeholder="Username" value={this.state.username} onChange={e => this.changeState(e)}></input>
 
                 <br></br>
                 <br></br>
