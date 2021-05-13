@@ -64,22 +64,28 @@ class Home extends Component {
 
                 <button id="refreshBtn">Refresh</button>
 
-                <h1 id="dropDownText" htmlFor="dropDownText">Refresh Rate (in seconds): </h1>
+                <div id="refreshDiv">
 
-                <select name="dropDownOptions" id="dropDownOptions" defaultValue={'5'}>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                </select>
+                    <h1 id="dropDownText" htmlFor="dropDownText">Refresh Rate (in seconds): </h1>
 
-                <h1 id="processesText" className="welcome">Processes</h1>
+                    <select name="dropDownOptions" id="dropDownOptions" defaultValue={'5'}>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+
+                <div id="processDiv">
+
+                    <h1 id="processesText" className="welcome">Processes</h1>
+                </div>
                 
             </div>
         );

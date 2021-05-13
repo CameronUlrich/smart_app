@@ -200,31 +200,48 @@
     text-decoration: none;
 }
 
+#processDiv{
+    position: absolute;
+    left: 1450px;
+    top: 50px;
+    animation: fadeIn 1s ease-out;
+    
+
+}
+
 #processesText{
     font-size: 50px;
+    
+    
+    
+    
+}
+
+#refreshDiv{
     position: absolute;
-    top: 50px;
-    right: 275px;
+    top: 700px;
+    left: 550px;
     animation: fadeIn 1s ease-out;
+
 }
 
 #dropDownText{
     outline: none;
     color: white;
-    top: 735px;
-    left: 520px;
-    position: absolute;
+    
+    
+    
     font-size: 35px;
-    animation: fadeIn 1s ease-out;
+    
 }
 
 #dropDownOptions{
     outline: none;
-    top: 760px;
-    position: absolute;
+    
     font-size: 35px;
-    animation: fadeIn 1s ease-out;
+    
 }
+
 
 body {background-color: #282c34;}
 
