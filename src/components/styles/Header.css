@@ -35,6 +35,13 @@
     
     
   }
+
+  #machineInfo{
+    font-size: 25px;
+    margin-top: 0px;
+    float: left;
+
+  }
   
   .topnav .homeText{
     padding: 10px 26px;

@@ -12,7 +12,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 library.add( faUser, faUsers, faUserFriends, faCog, faUserShield, faHome, faSignOutAlt )
 */
 
-
+/*
+[1] Machine Information:
+[1] - machine id: 00000000-0000-0000-0000-4ccc6affa6b4
+[1] - manudacturer: MSI
+[1] - model: MS-7A70
+[1] ...
+*/
 
 
 class Header extends Component {
@@ -32,6 +38,11 @@ class Header extends Component {
                         
 
                         <Link to="/home" id= "smartText" className="homeText">SMART</Link>
+
+
+                        <h1 id="machineInfo">Hello ! <u>Machine ID:</u> <u>Manufacturer:</u> <u>Model:</u></h1>
+
+
                         <Link to="/" className="logOutBtn">Log Out</Link>
                         
                     </ul>
