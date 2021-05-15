@@ -5,12 +5,15 @@ import { Helmet } from 'react-helmet';
 import { ToastContainer, toast } from 'react-toastify';
 import cookie from 'react-cookies';
 
+import '../globals.js';
+
 import './styles/Buttons.css';
 import './styles/Titles.css';
 
 import './styles/UserLogin.css';
 
 //let isRegister = false;
+
 
 class UserLogin extends Component {
 
@@ -22,6 +25,16 @@ class UserLogin extends Component {
             isRegister: false,
             toLoadLogin: false,
         };
+    }
+
+    saveUsername = () =>{
+        cookie.save('username', this.state.username, { path: '/' });
+        //__username__ = this.state.username;
+    
+    }
+
+    loggedInCookie = () =>{
+        cookie.save('is_logged_in', true, { path: '/' });
     }
 
     /* istanbul ignore next */
@@ -64,13 +77,23 @@ class UserLogin extends Component {
         this.userLogin(this.state.username, this.state.password);
     }
 
+    resetCookies = () => {
+        cookie.save('is_logged_in', false, {path: '/'});
+        cookie.remove('username');
+
+
+    }
+
     /* istanbul ignore next */
     loginUser = () => {
+        this.saveUsername();
+        this.loggedInCookie();
         this.props.history.push('/home');
     }
 
     /* istanbul ignore next */
     render() {
+        this.resetCookies();
         
 
         return (
@@ -93,7 +116,7 @@ class UserLogin extends Component {
                 <br></br>
                 <br></br>
                 
-                <input id="password" type="text" placeholder="Password" value={this.state.password} onChange={e => this.changeState(e)}></input>
+                <input id="password" type="password" placeholder="Password" value={this.state.password} onChange={e => this.changeState(e)}></input>
                 
                 <br></br>
                 <br></br>
