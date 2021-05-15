@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'; 
 import './styles/Header.css';
 import cookie from 'react-cookies';
+import UserLogin from './UserLogin';
+import __username__ from '../globals.js';
 
 /*
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -30,7 +32,22 @@ class Header extends Component {
         
     }
 
+    logOut = () => {
+        cookie.remove('username');
+        cookie.save('is_logged_in', false, {path: '/'});
+        console.log("logged out");
+    }
+
+    /*
+    consoleLog = () =>{
+        console.log(UserLogin.username);
+    }
+    */
+
+    
+
     render() {
+        
         return(
             <div>
                 <div className="topnav">
@@ -40,10 +57,10 @@ class Header extends Component {
                         <Link to="/home" id= "smartText" className="homeText">SMART</Link>
 
 
-                        <h1 id="machineInfo">Hello ! <u>Machine ID:</u> <u>Manufacturer:</u> <u>Model:</u></h1>
+                        <h1 id="machineInfo">Hello {cookie.load("username")}! <u>Machine ID:</u> <u>Manufacturer:</u> <u>Model:</u></h1>
 
 
-                        <Link to="/" className="logOutBtn">Log Out</Link>
+                        <Link to="/" className="logOutBtn" onClick={this.logOut()}>Log Out</Link>
                         
                     </ul>
                 </div>

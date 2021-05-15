@@ -120,7 +120,7 @@ class UserRegister extends Component {
                 <label id="passText">Password:  </label>
                 
                 
-                <input id="password" type="text" placeholder="Password" value={this.state.password} onChange={e => this.changeState(e)}></input>
+                <input id="password" type="password" placeholder="Password" value={this.state.password} onChange={e => this.changeState(e)}></input>
                 
                 <br></br>
                 <br></br>

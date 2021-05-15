@@ -3,6 +3,7 @@ import Header from './Header';
 import './styles/Home.css';
 import { Helmet } from 'react-helmet';
 import { ToastContainer, toast } from 'react-toastify';
+import '../globals.js';
 
 /*
 [1] ================================================
