@@ -28,7 +28,7 @@ class Header extends Component {
     /* istanbul ignore next */
     resetCookies = () => {
         cookie.save('_is_logged_in', false, {path: '/'});
-        //cookie.remove('_user_email', {path: '/'});
+        cookie.remove('username', {path: '/'});
         
     }
 
@@ -60,7 +60,7 @@ class Header extends Component {
                         <h1 id="machineInfo">Hello {cookie.load("username")}! <u>Machine ID:</u> <u>Manufacturer:</u> <u>Model:</u></h1>
 
 
-                        <Link to="/" className="logOutBtn" onClick={this.logOut()}>Log Out</Link>
+                        <Link to="/" className="logOutBtn" onClick={this.resetCookies}>Log Out</Link>
                         
                     </ul>
                 </div>

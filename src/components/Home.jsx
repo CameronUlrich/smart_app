@@ -4,6 +4,8 @@ import './styles/Home.css';
 import { Helmet } from 'react-helmet';
 import { ToastContainer, toast } from 'react-toastify';
 import '../globals.js';
+import cookie from 'react-cookies';
+import { Redirect, Route } from 'react-router-dom';
 
 /*
 [1] ================================================
@@ -70,6 +72,11 @@ import '../globals.js';
 class Home extends Component {
 
     render() {
+
+        if (cookie.load('is_logged_in') === 'false' || cookie.load('is_logged_in') === undefined) {
+            
+            return <Redirect to='/' />
+        }
         return(
             <div>
                 <Header />

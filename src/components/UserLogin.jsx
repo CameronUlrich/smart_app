@@ -77,6 +77,13 @@ class UserLogin extends Component {
         this.userLogin(this.state.username, this.state.password);
     }
 
+    resetCookies = () => {
+        cookie.save('is_logged_in', false, {path: '/'});
+        cookie.remove('username');
+
+
+    }
+
     /* istanbul ignore next */
     loginUser = () => {
         this.saveUsername();
@@ -86,6 +93,7 @@ class UserLogin extends Component {
 
     /* istanbul ignore next */
     render() {
+        this.resetCookies();
         
 
         return (
