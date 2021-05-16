@@ -24,7 +24,6 @@ async function registerMachine(username, password) {
       isRegistered = false;
       isLoggedIn = false
       const machinedata = await si.system();
-      const machineos = await si.osInfo();
       const response = await db.getUUID();
       const uuidjson = await response.json();
       const users = await db.getUsers();
@@ -68,6 +67,7 @@ async function registerMachine(username, password) {
       console.log(e)
     }
   }
+
 // retrieves all of the system information 
 async function retrieveSystemMetrics(round) {
   try {
