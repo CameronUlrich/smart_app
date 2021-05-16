@@ -131,7 +131,7 @@ async function retrieveSystemMetrics(round) {
         gpudata.controllers[0].clockCore/1.0, 
         gpudata.controllers[0].temperatureGpu/1.0, 
         gpudata.controllers[0].memoryTotal/1024.0,
-        gpudata.controllers[0].memoryUsed/1024.0);
+        Math.round(gpudata.controllers[0].memoryUsed/1024.0 * 100) / 100);
     console.log('GPU Information:');
     console.log('- manufucturer: ' + gpudata.controllers[0].vendor);
     console.log('- model: ' + gpudata.controllers[0].model);

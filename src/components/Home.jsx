@@ -128,21 +128,19 @@ class Home extends Component {
 
         this.setState({disk: diskjson})
 
-        console.log(this.state.disk)
 
         this.changeCPUState()
         this.changeGPUState()
         this.changeMemoryState()
-
-        console.log()
-        console.log(cpujson)
-        console.log(gpujson)
-        console.log(memoryjson)
      }
 
      async componentDidMount() {
-        const thisBoundedIncrementer = this.onRefresh.bind(this);
-        setInterval(thisBoundedIncrementer, 5000);
+        const thisBoundedRefresh = this.onRefresh.bind(this);
+        this.interval = setInterval(thisBoundedRefresh, 5000);
+     }
+
+     componentWillUnmount() {
+         clearInterval(this.interval)
      }
 
      async interval(){
