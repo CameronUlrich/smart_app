@@ -39,6 +39,10 @@ function getGpu(machineID) {
     return fetch(`http://localhost:3001/gpu/${machineID}`)
 }
 
+function getMachineInfo(machineID) {
+    return fetch(`http://localhost:3001/machineinfo/${machineID}`)
+}
+
 
 
 module.exports = {
@@ -49,6 +53,6 @@ module.exports = {
     getCpu,
     getDisk,
     getMemory,
-    getGpu
-
+    getGpu,
+    getMachineInfo
 }

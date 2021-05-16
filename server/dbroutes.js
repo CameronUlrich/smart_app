@@ -42,6 +42,17 @@ const getMachineID = (username) => {
 }
 
 
+const getMachineInfo = (id) => {
+  return new Promise(function(resolve, reject) {
+    pool.query('SELECT * FROM "Machine" m WHERE "machineID" = $1', [id], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(results.rows)
+    })
+  }) 
+}
+
 const getCPUs = (id) => {
   return new Promise(function(resolve, reject) {
     pool.query('SELECT * FROM "CPU" cpu1 WHERE "dateTime" = (SELECT MAX("dateTime") FROM "CPU" cpu2 WHERE cpu1."machineID" = cpu2."machineID") and "machineID" = $1', [id], (error, results) => {
@@ -229,5 +240,6 @@ module.exports = {
   deleteUser,
   createUserMachine,
   getUUID,
-  getMachineID
+  getMachineID,
+  getMachineInfo
 }

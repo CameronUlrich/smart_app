@@ -40,6 +40,17 @@ app.get('/machineid/:username', (req, res) => {
   })
 })
 
+app.get('/machineinfo/:id', (req, res) => {
+  dbroutes.getMachineInfo(req.params.username)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+
 
 app.get('/cpu/:id', (req, res) => {
   dbroutes.getCPUs(req.params.id)

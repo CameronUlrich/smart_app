@@ -108,7 +108,7 @@ async function retrieveSystemMetrics(round) {
 
     console.log('Machine Information:');
     console.log('- machine id: ' + machinedata.uuid);
-    console.log('- manudacturer: ' + machinedata.manufacturer);
+    console.log('- manufacturer: ' + machinedata.manufacturer);
     console.log('- model: ' + machinedata.model);
     console.log('...\n');
 

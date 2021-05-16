@@ -89,7 +89,8 @@ class Home extends Component {
             gpuMemory: 0,
             memoryTotal: 0,
             memoryFree: 0,
-            memoryUsed: 0
+            memoryUsed: 0,
+            disk: {}
         };
     }
 
@@ -125,7 +126,11 @@ class Home extends Component {
 
         this.state.memoryTotal = memoryjson[0].memorySize
         this.state.memoryFree = memoryjson[0].memoryFree
-        this.state.memoryUsed = memoryjson[0].memoryUsed
+        this.state.memoryUsed = memoryjson[0].
+        
+        this.setState({disk: memoryjson.parse(disk)})
+
+        console.log(disk)
 
         this.changeCPUState()
         this.changeGPUState()
