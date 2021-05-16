@@ -5,8 +5,9 @@ const readline = require('readline').createInterface({
   output: process.stdout
 })
 
-
-var answer = false;
+/**
+* Asks for the users username and password before their metrics begin to be collected
+*/
 readline.question(`What's your username?`, username => {
   readline.question(`What's your password?`, password => {
 
@@ -16,9 +17,11 @@ readline.question(`What's your username?`, username => {
   })
 })
 
-var round = 0;
 
-// registers a new machine
+/**
+* Registers a new machine based on a given username and password or if already registered 
+* begins collecting new metrics for the device
+*/
 async function registerMachine(username, password) {
     try {
       isRegistered = false;
@@ -57,9 +60,10 @@ async function registerMachine(username, password) {
       })
 
       if(isLoggedIn){
+        retrieveSystemMetrics(round);
         setInterval(function() {
-          retrieveSystemMetrics(round);
           round++;
+          retrieveSystemMetrics(round);
         }, 10000);
       }
 
@@ -68,7 +72,9 @@ async function registerMachine(username, password) {
     }
   }
 
-// retrieves all of the system information 
+/**
+* Retrieves all the system information and sends it up to the database
+*/
 async function retrieveSystemMetrics(round) {
   try {
     const machinedata = await si.system();
