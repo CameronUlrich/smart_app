@@ -27,7 +27,7 @@ class Header extends Component {
 
     /* istanbul ignore next */
     resetCookies = () => {
-        cookie.save('_is_logged_in', false, {path: '/'});
+        cookie.save('is_logged_in', false, {path: '/'});
         cookie.remove('username', {path: '/'});
         
     }
