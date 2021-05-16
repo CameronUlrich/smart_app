@@ -95,7 +95,7 @@ class Header extends Component {
                         <Link to="/home" id= "smartText" className="homeText">SMART</Link>
 
 
-                        <h1 id="machineInfo">Hello {cookie.load("username")}! <u>Machine ID:</u> {this.state.machineID} <u>Manufacturer:</u> {this.state.machineMan} <u>Model:</u> {this.state.machineModel}</h1>
+                        <h1 id="machineInfo">Hello {cookie.load("username")}! <u>Machine ID:</u> {this.state.machineID} {/*<u>Manufacturer:</u> {this.state.machineMan} <u>Model:</u> {this.state.machineModel}*/}</h1>
 
 
                         <Link to="/" className="logOutBtn" onClick={this.resetCookies}>Log Out</Link>

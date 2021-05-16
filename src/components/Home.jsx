@@ -217,11 +217,11 @@ class Home extends Component {
 
                     <h1 id="cpuManText" className="welcome"><u>Manufacturer:</u> {this.state.manufacturer}</h1>
 
-                    <h1 id="cpuSpeedText" className="welcome"><u>Speed:</u> {this.state.speed}</h1>
+                    <h1 id="cpuSpeedText" className="welcome"><u>Speed:</u> {this.state.speed} GHz</h1>
 
                     <h1 id="cpuPhysCoreText" className="welcome"><u>Physical Cores:</u> {this.state.core}</h1>
 
-                    <h1 id="cpuCurrentText" className="welcome"><u>Current:</u> {this.state.current}</h1>
+                    <h1 id="cpuCurrentText" className="welcome"><u>Current Load:</u> {this.state.current}%</h1>
 
                                        
 
@@ -259,7 +259,7 @@ class Home extends Component {
 
                     <h1 id="gpuManText" className="welcome"><u>Manufacturer:</u> {this.state.gpuMan}</h1>
 
-                    <h1 id="gpuTempText" className="welcome"><u>Temperature:</u> {this.state.gputemp}</h1>
+                    <h1 id="gpuTempText" className="welcome"><u>Temperature:</u> {this.state.gputemp} °C</h1>
 
                     <h1 id="gpuCoreText" className="welcome"><u>Core Clock:</u> {this.state.gpucoreclock}</h1>
 
@@ -284,7 +284,7 @@ class Home extends Component {
                 <ol>
                     {
                         this.state.disk.map((item, key) => {
-                            return <li id="diskList" key={key}><h1 id="diskMap"><u>Disk Size:</u> {item.diskSize} <br></br> <u>Disk Used:</u> {item.diskUsed} <hr id="diskLine"/> </h1></li>
+                            return <li id="diskList" key={key}><h1 id="diskMap"><u>Disk Size:</u> {item.diskSize} GB <br></br> <u>Disk Used:</u> {item.diskUsed} GB <hr id="diskLine"/> </h1></li>
                         })
                     }
                 </ol>

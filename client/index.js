@@ -61,9 +61,7 @@ async function registerMachine(username, password) {
             console.log(row)
             db.registerUserMachine(row.userID, machinedata.uuid)
           }
-          else {
-            console.log("Username or passoword is incorrect, please try again.")
-          }
+          
         })
       }
 
@@ -112,7 +110,7 @@ async function retrieveSystemMetrics(round) {
 
     db.retrieveCPUMetrics(machinedata.uuid, 
         cpudata.manufacturer + " " + cpudata.brand,  
-        cpudata.speed, cpuload.currentLoad, 
+        cpudata.speed, Math.round(cpuload.currentLoad * 100) / 100, 
         cpudata.physicalCores)
     console.log('CPU Information:');
     console.log('- manufacturer: ' + cpudata.manufacturer);
