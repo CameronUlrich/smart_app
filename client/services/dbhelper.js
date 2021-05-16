@@ -1,14 +1,24 @@
 const fetch = require("node-fetch");
 
-function registerMachine (id, manufacturer, os, model) {
+function registerMachine (id) {
     return fetch('http://localhost:3001/createMachine', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({id, manufacturer, os, model}),
+        body: JSON.stringify({id}),
     })
 }
+
+// function registerMachine (id, manufacturer, os, model) {
+//     return fetch('http://localhost:3001/createMachine', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({id, manufacturer, os, model}),
+//     })
+// }
 
 function retrieveCPUMetrics (id, model, speed, percent, corecount) {
     return fetch('http://localhost:3001/cpuMetrics', {

@@ -52,10 +52,7 @@ async function registerMachine(username, password) {
       
       console.log(isRegistered)
       if (!isRegistered){
-        db.registerMachine(machinedata.uuid, 
-          machinedata.manufacturer, 
-          machineos.platform, 
-          machinedata.model);
+        db.registerMachine(machinedata.uuid);
           //this.state.machineid = json.machineID;
         
 

@@ -135,6 +135,7 @@ class Home extends Component {
      }
 
      async componentDidMount() {
+        this.onRefresh();
         const thisBoundedRefresh = this.onRefresh.bind(this);
         this.interval = setInterval(thisBoundedRefresh, 5000);
      }
@@ -288,7 +289,7 @@ class Home extends Component {
                     }
                 </ol>
 
-                    <h1 id="disk0TypeText" className="welcome"><u>Type:</u></h1>
+                    {/* <h1 id="disk0TypeText" className="welcome"><u>Type:</u></h1>
 
                     <h1 id="disk0SizeText" className="welcome"><u>Size:</u></h1>
 
@@ -324,7 +325,7 @@ class Home extends Component {
 
                     <h1 id="disk3FreeText" className="welcome"><u>Free:</u></h1>
 
-                    <h1 id="disk3UsedText" className="welcome"><u>Used:</u></h1>
+                    <h1 id="disk3UsedText" className="welcome"><u>Used:</u></h1> */}
 
                 </div>
 

@@ -150,8 +150,8 @@ const createUserMachine = (body) => {
 
 const createNewMachine = (body) => {
   return new Promise(function(resolve, reject) {
-    const { id, manufacturer, os, model } = body;
-    pool.query('INSERT INTO "Machine" ("machineID", "machineMake", "machineOS", "machineModel", "dateTime") VALUES ($1, $2, $3, $4, to_timestamp($5/1000.0)) RETURNING *', [id, manufacturer,os , model, Date.now()], (error, results) => {
+    const { id } = body;
+    pool.query('INSERT INTO "Machine" ("machineID", "dateTime") VALUES ($1,  to_timestamp($2/1000.0)) RETURNING *', [id, Date.now()], (error, results) => {
       if (error) {
         reject(error)
       }
@@ -159,6 +159,18 @@ const createNewMachine = (body) => {
     })
   })
 }
+
+// const createNewMachine = (body) => {
+//   return new Promise(function(resolve, reject) {
+//     const { id, manufacturer, os, model } = body;
+//     pool.query('INSERT INTO "Machine" ("machineID", "machineMake", "machineOS", "machineModel", "dateTime") VALUES ($1, $2, $3, $4, to_timestamp($5/1000.0)) RETURNING *', [id, manufacturer,os , model, Date.now()], (error, results) => {
+//       if (error) {
+//         reject(error)
+//       }
+//       resolve(results.rows)
+//     })
+//   })
+// }
 
 const retrieveCPUMetrics = (body) => {
   return new Promise(function(resolve, reject) {
