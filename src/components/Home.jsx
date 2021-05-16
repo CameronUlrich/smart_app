@@ -75,6 +75,9 @@ const db = require('./services/dbhelper')
 
 class Home extends Component {
 
+    /**
+    * Initializing values for each of our metrics to be collected
+    */
     constructor(props) {
         super(props);
         this.state = {
@@ -95,7 +98,9 @@ class Home extends Component {
     }
 
     
-
+    /**
+    * Calls the database for all the metrics associated with the users machine
+    */
     async onRefresh(){
         const machine = await db.getMachine(cookie.load("username"));
         const userjson = await machine.json();
@@ -134,20 +139,26 @@ class Home extends Component {
         this.changeMemoryState()
      }
 
+    /**
+    * On loading of page this function calls the onRefresh function and begins retrieving metrics from database 
+    * on an interval.
+    */
      async componentDidMount() {
         this.onRefresh()
         const thisBoundedRefresh = this.onRefresh.bind(this);
         this.interval = setInterval(thisBoundedRefresh, 5000);
      }
 
-     componentWillUnmount() {
-         clearInterval(this.interval)
-     }
+    /**
+    * On unload of a page clears the interval refresh
+    */
+    componentWillUnmount() {
+        clearInterval(this.interval)
+    }
 
-     async interval(){
-         this.intervalId = setInterval(console.log("hello"),5000)
-     }
-
+    /**
+    * Changes state of cpu values on refresh
+    */
     changeCPUState(){
         this.setState({"cpuManText": this.state.manufacturer})
         this.setState({"cpuSpeedText": this.state.speed})
@@ -155,6 +166,9 @@ class Home extends Component {
         this.setState({"cpuCurrentText": this.state.current})
     }
 
+    /**
+    * Changes state of gpu values on refresh
+    */
     changeGPUState(){
         this.setState({"gpuManText": this.state.gpuMan})
         this.setState({"gpuTempText": this.state.gputemp})
@@ -162,25 +176,21 @@ class Home extends Component {
         this.setState({"gpuMemoryText": this.state.gpuMemory})
     }
 
+    /**
+    * Changes state of memory values on refresh
+    */
     changeMemoryState(){
         this.setState({"memoryTotalText": this.state.memorySize})
         this.setState({"memoryFreeText": this.state.memoryFree})
         this.setState({"memoryUsedText": this.state.gpucoreclock})
     }
 
-     // updates the password with whatever is in the password field
-    /* istanbul ignore next */
-    changeState(e) {
-        this.setState({
-            [e.target.id]: e.target.value
-        })
-    }
-     
-     /* istanbul ignore next */
+    
+    /**
+    * On click of the refresh button, refreshes the page
+    */
     handleClick(e) {
-        console.log('The button was clicked.');
         this.onRefresh();
-        
     }
 
 

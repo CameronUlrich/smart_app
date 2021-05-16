@@ -23,27 +23,33 @@ class UserRegister extends Component {
     }
 
 
-    // updates the email with whatever is in the email field
-    /* istanbul ignore next */
+    /**
+    * Changes the state of the input field being modified
+    */
     changeState(e) {
         this.setState({
             [e.target.id]: e.target.value
         })
     }
 
-    /* istanbul ignore next */
+    /**
+    * Returns user to login page
+    */
     registerUser = () => {
         this.props.history.push('/');
     }
 
-    /* istanbul ignore next */
+    /**
+    * On click registers a new user
+    */
     handleClick(e) {
-        e.preventDefault();
-        console.log('The button was clicked.');
         this.userRegister(this.state.email, this.state.username, this.state.password);
     }
 
-    /* istanbul ignore next */
+    /**
+    * Registers a new user and checks to make sure they don't already have an account
+    * or if another user has already created an account with that username
+    */
     userRegister(email, username, password) {
         fetch('http://localhost:3001')
         .then(response => {
@@ -83,7 +89,7 @@ class UserRegister extends Component {
             });
         }
     }
-    /* istanbul ignore next */
+    
     render() {
         
 

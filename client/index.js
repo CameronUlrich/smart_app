@@ -10,7 +10,6 @@ var answer = false;
 readline.question(`What's your username?`, username => {
   readline.question(`What's your password?`, password => {
 
-    console.log(username + password)
     registerMachine(username, password);
     
     readline.close()
@@ -18,14 +17,6 @@ readline.question(`What's your username?`, username => {
 })
 
 var round = 0;
-
-// promises style - new since version 3
-function retrieveMetrics(){
-    si.cpu().then(data => {console.log(data)});
-    si.graphics().then(data => {console.log(data)});
-    si.cpuCurrentSpeed().then(data => {console.log(data)});
-
-}
 
 // registers a new machine
 async function registerMachine(username, password) {
@@ -39,10 +30,6 @@ async function registerMachine(username, password) {
       const users = await db.getUsers();
       const userjson = await users.json();
       var round = 0;
-
-      console.log(machinedata)
-      console.log(uuidjson)
-      console.log(round)
         
       uuidjson.forEach(row => {
         if(row.machineID === machinedata.uuid) {
@@ -50,7 +37,6 @@ async function registerMachine(username, password) {
         }
       })
       
-      console.log(isRegistered)
       if (!isRegistered){
         db.registerMachine(machinedata.uuid);
           //this.state.machineid = json.machineID;
@@ -58,7 +44,6 @@ async function registerMachine(username, password) {
 
         userjson.forEach(row => {
           if (username === row.username && password === row.password){
-            console.log(row)
             db.registerUserMachine(row.userID, machinedata.uuid)
           }
           
@@ -68,6 +53,7 @@ async function registerMachine(username, password) {
       userjson.forEach(row => {
         if (username === row.username && password === row.password){
           isLoggedIn = true;
+          console.log("Logged in! Metrics will begin collection!")
         }        
       })
 
@@ -78,8 +64,6 @@ async function registerMachine(username, password) {
         }, 10000);
       }
 
-
-      
     } catch (e) {
       console.log(e)
     }
@@ -160,27 +144,6 @@ async function retrieveSystemMetrics(round) {
         console.log('...\n');
     }
     
-
-    // console.log('Network Information:');
-    // console.log('- card: ' + networkdata[1].ifaceName);
-    // console.log('- upload: ' + networkdata[1].operstate);
-    // console.log('- download: ' + networkdata[1].speed);
-    // console.log('...\n');
-
-    // console.log('Process Information:');
-    // var count = 0;
-    // for (var i = 0; processdata.list.length; i++) {
-    //     if(count < 15){
-    //         if (processdata.list[i].cpu > 0.1) {
-    //             console.log("- process " + count + ": name: " + processdata.list[i].name + 
-    //                 " || cpu usage: " + processdata.list[i].cpu + " || memory usage: " + processdata.list[i].mem);
-    //             count++;
-    //         }
-    //     }
-    // }
-
-
-
     console.log('================================================');
     console.log('===========Metric Collection Round ' + round +'============');
     console.log('================================================\n');

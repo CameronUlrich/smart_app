@@ -50,8 +50,6 @@ app.get('/machineinfo/:id', (req, res) => {
   })
 })
 
-
-
 app.get('/cpu/:id', (req, res) => {
   dbroutes.getCPUs(req.params.id)
   .then(response => {
