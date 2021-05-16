@@ -9,6 +9,7 @@ test("Testing adding a user to the Database.", () => {
         expect(email).toEqual(data.email);
         expect(username).toEqual(data.username);
         expect(password).toEqual(data.password);
+        console.log(data);
     })
 })
 

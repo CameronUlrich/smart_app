@@ -24,36 +24,26 @@ class UserRegister extends Component {
 
 
     // updates the email with whatever is in the email field
-    updateEmail(e) {
+    /* istanbul ignore next */
+    changeState(e) {
         this.setState({
-            email: e.target.value
+            [e.target.id]: e.target.value
         })
     }
 
-    // updates the username with whatever is in the username field
-    updateUsername(e) {
-        this.setState({
-            username: e.target.value
-        })
-    }
-
-    // updates the password with whatever is in the password field
-    updatePassword(e) {
-        this.setState({
-            password: e.target.value
-        })
-    }
-
+    /* istanbul ignore next */
     registerUser = () => {
         this.props.history.push('/');
     }
 
+    /* istanbul ignore next */
     handleClick(e) {
         e.preventDefault();
         console.log('The button was clicked.');
         this.userRegister(this.state.email, this.state.username, this.state.password);
     }
 
+    /* istanbul ignore next */
     userRegister(email, username, password) {
         fetch('http://localhost:3001')
         .then(response => {
@@ -93,7 +83,7 @@ class UserRegister extends Component {
             });
         }
     }
-    
+    /* istanbul ignore next */
     render() {
         
 
@@ -111,26 +101,26 @@ class UserRegister extends Component {
 
                 <h1 id="registerText" className="welcome">Register</h1>
 
-                <text id="userText">Email: </text>
+                <label id="userText">Email: </label>
                 
 
-                <input id="email" type="text" placeholder="Email" value={this.state.email} onChange={e => this.updateEmail(e)}></input>
+                <input id="email" type="text" placeholder="Email" value={this.state.email} onChange={e => this.changeState(e)}></input>
 
                 <br></br>
                 <br></br>
                 
-                <text id="userText">Username: </text>
+                <label id="userText">Username: </label>
                 
 
-                <input id="userName" type="text" placeholder="Username" value={this.state.username} onChange={e => this.updateUsername(e)}></input>
+                <input id="username" type="text" placeholder="Username" value={this.state.username} onChange={e => this.changeState(e)}></input>
 
                 <br></br>
                 <br></br>
 
-                <text id="passText">Password:  </text>
+                <label id="passText">Password:  </label>
                 
-
-                <input id="password" type="text" placeholder="Password" value={this.state.password} onChange={e => this.updatePassword(e)}></input>
+                
+                <input id="password" type="password" placeholder="Password" value={this.state.password} onChange={e => this.changeState(e)}></input>
                 
                 <br></br>
                 <br></br>

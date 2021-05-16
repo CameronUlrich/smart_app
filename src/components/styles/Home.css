@@ -14,6 +14,7 @@
     top: 550px;
 }
 
+
 #cpuDiv{
     width: 500px;
     height: 250px;
@@ -55,109 +56,353 @@
     position: relative;
     top: -420px;
     left: 600px;
+    overflow: auto;
     animation: fadeIn 1s ease-out;
+}
+
+#diskMap{
+    color: white;
+    text-align: left;
+
+}
+
+#diskList{
+    color: white;
 }
 
 #cpuText{
     font-size: 50px;
     position: relative;
-    top: -39px;
+    top: -100px;
     left: -5px;
-    border: 5px solid white;
-    width: 250px;
+    /*border: 5px solid white;*/
+    
 }
 
 #memoryText{
-    border: 5px solid white;
+    /*border: 5px solid white;*/
     font-size: 50px;
     position: relative;
-    top: -39px;
+    top: -100px;
     left: -5px;
-    width: 250px;
+    
 }
 
 #gpuText{
-    width: 250px;
-    border: 5px solid white;
+    
+    /*border: 5px solid white;*/
     font-size: 50px;
     position: relative;
-    top: -39px;
+    top: -100px;
     left: -5px;
 }
 
 #diskText{
-    width: 250px;
-    border: 5px solid white;
+    animation: fadeIn 1s ease-out;
     font-size: 50px;
+}
+
+#diskTextDiv{
+    animation: fadeIn 1s ease-out;
+    
+    /*border: 5px solid white;*/
+    font-size: 30px;
+    position: absolute;
+    top: 335px;
+    left: 790px;
+}
+
+#cpuManText{
+    font-size: 33px;
+    
     position: relative;
-    top: -39px;
-    left: -5px;
+    top: -130px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#cpuBrandText{
+    font-size: 33px;
+    
+    position: relative;
+    top: -140px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#cpuSpeedText{
+    font-size: 33px;
+    
+    position: relative;
+    top: -150px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#cpuCoreText{
+    font-size: 33px;
+    
+    position: relative;
+    top: -160px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#cpuPhysCoreText{
+    font-size: 33px;
+    
+    position: relative;
+    top: -170px;
+    left: 5px;
+    text-align: left;
+
 }
 
 #cpuCurrentText{
+    font-size: 33px;
     
     position: relative;
-    top: -90px;
-    left: -15px;
+    top: -180px;
+    left: 5px;
+    text-align: left;
+    
 
 }
 
-#cpuPeakText{
-    position: relative;
-    top: -150px;
-    left: -55px;
 
-}
 
-#memoryCurrentText{
+#memoryTotalText{
+    font-size: 50px;
     
     position: relative;
-    top: -90px;
-    left: -15px;
+    top: -125px;
+    left: 5px;
+    text-align: left;
 
 }
 
-#memoryPeakText{
+#memoryFreeText{
+    font-size: 50px;
     position: relative;
     top: -150px;
-    left: -55px;
+    left: 5px;
+    text-align: left;
 
 }
 
-#gpuCurrentText{
+#memoryUsedText{
+    font-size: 50px;
+    position: relative;
+    top: -170px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#gpuManText{
+    font-size: 30px;
+    position: relative;
+    top: -130px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#gpuModelText{
+    font-size: 30px;
+    position: relative;
+    top: -140px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#gpuTempText{
+    font-size: 30px;
+    position: relative;
+    top: -150px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#gpuCoreText{
+    font-size: 30px;
+    position: relative;
+    top: -160px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#gpuMemoryText{
+    font-size: 30px;
+    position: relative;
+    top: -170px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk0TypeText{
+    font-size: 30px;
+    position: relative;
+    top: -15px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk0SizeText{
+    font-size: 30px;
+    position: relative;
+    top: -25px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk0FreeText{
+    font-size: 30px;
+    position: relative;
+    top: -35px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk0UsedText{
+    font-size: 30px;
+    position: relative;
+    top: -45px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk1TypeText{
+    font-size: 30px;
+    position: relative;
+    top: -15px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk1SizeText{
+    font-size: 30px;
+    position: relative;
+    top: -25px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk1FreeText{
+    font-size: 30px;
+    position: relative;
+    top: -35px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk1UsedText{
+    font-size: 30px;
+    position: relative;
+    top: -45px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk2TypeText{
+    font-size: 30px;
+    position: relative;
+    top: -15px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk2SizeText{
+    font-size: 30px;
+    position: relative;
+    top: -25px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk2FreeText{
+    font-size: 30px;
+    position: relative;
+    top: -35px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk2UsedText{
+    font-size: 30px;
+    position: relative;
+    top: -45px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk3TypeText{
+    font-size: 30px;
+    position: relative;
+    top: -15px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk3SizeText{
+    font-size: 30px;
+    position: relative;
+    top: -25px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk3FreeText{
+    font-size: 30px;
+    position: relative;
+    top: -35px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#disk3UsedText{
+    font-size: 30px;
+    position: relative;
+    top: -45px;
+    left: 5px;
+    text-align: left;
+
+}
+
+#diskLine{
     
-    position: relative;
-    top: -90px;
-    left: -15px;
-
+    width: 300px;
 }
 
-#gpuPeakText{
-    position: relative;
-    top: -150px;
-    left: -55px;
 
-}
-
-#diskCurrentText{
-    
-    position: relative;
-    top: -90px;
-    left: -15px;
-
-}
-
-#diskPeakText{
-    position: relative;
-    top: -150px;
-    left: -55px;
-
-}
 
 #refreshBtn{
-    position: relative;
-    top: -325px;
-    left: -365px;
+    position:absolute;
+    left: 50px;
+    top: 750px;
 
     outline: none;
     padding: 10px 26px;
@@ -188,6 +433,48 @@
     
     
     text-decoration: none;
+}
+
+#processDiv{
+    position: absolute;
+    left: 1450px;
+    top: 50px;
+    animation: fadeIn 1s ease-out;
+    
+
+}
+
+#processesText{
+    font-size: 50px;
+    
+    
+    
+    
+}
+
+#refreshDiv{
+    position: absolute;
+    top: 700px;
+    left: 550px;
+    animation: fadeIn 1s ease-out;
+
+}
+
+#dropDownText{
+    outline: none;
+    color: white;
+    
+    
+    
+    font-size: 35px;
+    
+}
+
+#dropDownOptions{
+    outline: none;
+    
+    font-size: 35px;
+    
 }
 
 
