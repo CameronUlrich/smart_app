@@ -27,6 +27,9 @@ library.add( faUser, faUsers, faUserFriends, faCog, faUserShield, faHome, faSign
 
 class Header extends Component {
 
+    /**
+    * Initializing values for each of our metrics to be displayed
+    */
     constructor(props) {
         super(props);
         this.state = {
@@ -36,7 +39,6 @@ class Header extends Component {
         };
     }
 
-    /* istanbul ignore next */
     resetCookies = () => {
         cookie.save('is_logged_in', false, {path: '/'});
         cookie.remove('username', {path: '/'});
@@ -49,6 +51,9 @@ class Header extends Component {
         console.log("logged out");
     }
 
+    /**
+    * On load of a page, it gets the users machine information
+    */
     async componentDidMount(){
         const machine = await db.getMachine(cookie.load("username"));
         const userjson = await machine.json();
@@ -63,24 +68,19 @@ class Header extends Component {
         this.state.machineMan = machinejson[0].machineMake
         this.state.machineModel =  machinejson[0].machineModel
 
-
-
         this.changeMachineState()
         console.log(this.state.machineID)
     }
 
+    /**
+    * Sets the machine data for the page
+    */
     changeMachineState(){
         this.setState({"machineInfo": this.state.machineID})
         this.setState({"machineInfo": this.state.machineModel})
         this.setState({"machineInfo": this.state.machineMan})
         console.log(this.state.machineID)
     }
-
-    /*
-    consoleLog = () =>{
-        console.log(UserLogin.username);
-    }
-    */
 
     
 

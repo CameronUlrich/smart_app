@@ -37,21 +37,23 @@ class UserLogin extends Component {
         cookie.save('is_logged_in', true, { path: '/' });
     }
 
-    /* istanbul ignore next */
+    
     registerUser = () => {
         this.state.isRegister = true;
     }
 
-    // updates the password with whatever is in the password field
-    /* istanbul ignore next */
+    /**
+    * Changes state of field on change of the input
+    */
     changeState(e) {
         this.setState({
             [e.target.id]: e.target.value
         })
     }
 
-    // checks to see if user exists in db
-    /* istanbul ignore next */
+    /**
+    * Checks to see if user exists in db
+    */
     userLogin(username, password) {
         fetch('http://localhost:3001')
         .then(response => {
@@ -71,27 +73,30 @@ class UserLogin extends Component {
         });
     }
 
-    /* istanbul ignore next */
+    /**
+    * On click logs the user in
+    */
     handleClick(e) {
-        console.log('The button was clicked.');
         this.userLogin(this.state.username, this.state.password);
     }
 
+    /**
+    * Resets cookies on log out
+    */
     resetCookies = () => {
         cookie.save('is_logged_in', false, {path: '/'});
         cookie.remove('username');
-
-
     }
 
-    /* istanbul ignore next */
+    /**
+    * Logs User into homepage
+    */
     loginUser = () => {
         this.saveUsername();
         this.loggedInCookie();
         this.props.history.push('/home');
     }
 
-    /* istanbul ignore next */
     render() {
         this.resetCookies();
         
