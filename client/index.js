@@ -141,9 +141,9 @@ async function retrieveSystemMetrics(round) {
     console.log('...\n');
 
     db.retrieveMemoryMetrics(machinedata.uuid,
-        memorydata.total/1073741824.0,
-        memorydata.free/1073741824.0,
-        memorydata.used/1073741824.0)
+        Math.round(memorydata.total/1073741824.0 * 100) / 100,
+        Math.round(memorydata.free/1073741824.0 * 100) / 100,
+        Math.round(memorydata.used/1073741824.0 * 100) / 100)
     console.log('Memory Information:');
     console.log('- total: ' + memorydata.total/1073741824.0 + " GB");
     console.log('- free: ' + memorydata.free/1073741824.0 + " GB");
@@ -153,9 +153,9 @@ async function retrieveSystemMetrics(round) {
     for (var i = 0; i < diskdata.length; i ++){
         db.retrieveDiskMetrics(machinedata.uuid, 
             diskname[i].type, 
-            diskdata[i].size/1073741824.0, 
-            diskdata[i].free/1073741824.0, 
-            diskdata[i].used/1073741824.0);
+            Math.round(diskdata[i].size/1073741824.0 * 100) / 100, 
+            Math.round(diskdata[i].free/1073741824.0 * 100) / 100, 
+            Math.round(diskdata[i].used/1073741824.0 * 100) / 100);
         console.log('Disk ' + i  + ' Information:');
         console.log('- name: ' + diskname[i].name);
         console.log('- type: ' + diskname[i].type);

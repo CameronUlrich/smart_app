@@ -90,13 +90,11 @@ class Home extends Component {
             memoryTotal: 0,
             memoryFree: 0,
             memoryUsed: 0,
-            disk: {}
+            disk: []
         };
     }
 
-    componentDidMount() {
-        console.log(cookie.load("username"))
-     }
+    
 
     async onRefresh(){
         const machine = await db.getMachine(cookie.load("username"));
@@ -126,11 +124,11 @@ class Home extends Component {
 
         this.state.memoryTotal = memoryjson[0].memorySize
         this.state.memoryFree = memoryjson[0].memoryFree
-        this.state.memoryUsed = memoryjson[0].
-        
-        this.setState({disk: memoryjson.parse(disk)})
+        this.state.memoryUsed = memoryjson[0].memoryUsed
 
-        console.log(disk)
+        this.setState({disk: diskjson})
+
+        console.log(this.state.disk)
 
         this.changeCPUState()
         this.changeGPUState()
@@ -139,8 +137,16 @@ class Home extends Component {
         console.log()
         console.log(cpujson)
         console.log(gpujson)
-        console.log(diskjson)
         console.log(memoryjson)
+     }
+
+     async componentDidMount() {
+        const thisBoundedIncrementer = this.onRefresh.bind(this);
+        setInterval(thisBoundedIncrementer, 5000);
+     }
+
+     async interval(){
+         this.intervalId = setInterval(console.log("hello"),5000)
      }
 
     changeCPUState(){
@@ -158,9 +164,9 @@ class Home extends Component {
     }
 
     changeMemoryState(){
-        this.setState({"memoryTotalText": this.state.memoryTotal})
+        this.setState({"memoryTotalText": this.state.memorySize})
         this.setState({"memoryFreeText": this.state.memoryFree})
-        this.setState({"memoryUsedText": this.state.memoryUsed})
+        this.setState({"memoryUsedText": this.state.gpucoreclock})
     }
 
      // updates the password with whatever is in the password field
@@ -175,7 +181,10 @@ class Home extends Component {
     handleClick(e) {
         console.log('The button was clicked.');
         this.onRefresh();
+        
     }
+
+
 
     render() {
 
@@ -273,6 +282,13 @@ class Home extends Component {
 
                 <div id="diskDiv" class="line">
                     
+                <ol>
+                    {
+                        this.state.disk.map((item, key) => {
+                            return <li key={key}><h1>Disk Size: {item.diskSize} Disk Used: {item.diskUsed} </h1></li>
+                        })
+                    }
+                </ol>
 
                     <h1 id="disk0TypeText" className="welcome"><u>Type:</u></h1>
 
