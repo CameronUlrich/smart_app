@@ -1,5 +1,21 @@
 const si = require('systeminformation');
 const db = require('./services/dbhelper');
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
+
+
+var answer = false;
+readline.question(`What's your username?`, username => {
+  readline.question(`What's your password?`, password => {
+
+    console.log(username + password)
+    registerMachine(username, password);
+    
+    readline.close()
+  })
+})
 
 var round = 0;
 
@@ -12,20 +28,67 @@ function retrieveMetrics(){
 }
 
 // registers a new machine
-async function registerMachine() {
+async function registerMachine(username, password) {
     try {
+      isRegistered = false;
+      isLoggedIn = false
       const machinedata = await si.system();
       const machineos = await si.osInfo();
-      db.registerMachine(machinedata.uuid, 
-        machinedata.manufacturer, 
-        machineos.platform, 
-        machinedata.model);
+      const response = await db.getUUID();
+      const uuidjson = await response.json();
+      const users = await db.getUsers();
+      const userjson = await users.json();
+      var round = 0;
+
+      console.log(machinedata)
+      console.log(uuidjson)
+      console.log(round)
+        
+      uuidjson.forEach(row => {
+        if(row.machineID === machinedata.uuid) {
+          isRegistered = true
+        }
+      })
+      
+      console.log(isRegistered)
+      if (!isRegistered){
+        db.registerMachine(machinedata.uuid, 
+          machinedata.manufacturer, 
+          machineos.platform, 
+          machinedata.model);
+          //this.state.machineid = json.machineID;
+        
+
+        userjson.forEach(row => {
+          if (username === row.username && password === row.password){
+            console.log(row)
+            db.registerUserMachine(row.userID, machinedata.uuid)
+          }
+          else {
+            console.log("Username or passoword is incorrect, please try again.")
+          }
+        })
+      }
+
+      userjson.forEach(row => {
+        if (username === row.username && password === row.password){
+          isLoggedIn = true;
+        }        
+      })
+
+      if(isLoggedIn){
+        setInterval(function() {
+          retrieveSystemMetrics(round);
+          round++;
+        }, 10000);
+      }
+
+
       
     } catch (e) {
       console.log(e)
     }
   }
-
 // retrieves all of the system information 
 async function retrieveSystemMetrics(round) {
   try {
@@ -133,9 +196,3 @@ async function retrieveSystemMetrics(round) {
     console.log(e)
   }
 }
-
-registerMachine();
-setInterval(function() {
-    retrieveSystemMetrics(round);
-    round++;
-  }, 10000);

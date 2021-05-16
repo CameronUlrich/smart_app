@@ -50,10 +50,32 @@ function retrieveMemoryMetrics (id, size, free, used) {
     })
 }
 
+function getUUID(){
+    return fetch('http://localhost:3001/uuid')
+}
+
+function registerUserMachine(uid, mid){
+    return fetch('http://localhost:3001/createUserMachine', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({uid, mid}),
+    })
+}
+
+function getUsers () {
+    return fetch('http://localhost:3001')
+}
+
+
 module.exports = {
     registerMachine,
     retrieveCPUMetrics,
     retrieveGPUMetrics,
     retrieveDiskMetrics,
-    retrieveMemoryMetrics
+    retrieveMemoryMetrics,
+    getUUID,
+    getUsers,
+    registerUserMachine
 }
