@@ -135,6 +135,7 @@ class Home extends Component {
      }
 
      async componentDidMount() {
+        this.onRefresh()
         const thisBoundedRefresh = this.onRefresh.bind(this);
         this.interval = setInterval(thisBoundedRefresh, 5000);
      }
@@ -283,48 +284,12 @@ class Home extends Component {
                 <ol>
                     {
                         this.state.disk.map((item, key) => {
-                            return <li key={key}><h1>Disk Size: {item.diskSize} Disk Used: {item.diskUsed} </h1></li>
+                            return <li id="diskList" key={key}><h1 id="diskMap"><u>Disk Size:</u> {item.diskSize} <br></br> <u>Disk Used:</u> {item.diskUsed} <hr id="diskLine"/> </h1></li>
                         })
                     }
                 </ol>
 
-                    <h1 id="disk0TypeText" className="welcome"><u>Type:</u></h1>
-
-                    <h1 id="disk0SizeText" className="welcome"><u>Size:</u></h1>
-
-                    <h1 id="disk0FreeText" className="welcome"><u>Free:</u></h1>
-
-                    <h1 id="disk0UsedText" className="welcome"><u>Used:</u></h1>
-
-                    <hr id="diskLine"/>
-
-                    <h1 id="disk1TypeText" className="welcome"><u>Type:</u></h1>
-
-                    <h1 id="disk1SizeText" className="welcome"><u>Size:</u></h1>
-
-                    <h1 id="disk1FreeText" className="welcome"><u>Free:</u></h1>
-
-                    <h1 id="disk1UsedText" className="welcome"><u>Used:</u></h1>
-
-                    <hr id="diskLine"/>
-
-                    <h1 id="disk2TypeText" className="welcome"><u>Type:</u></h1>
-
-                    <h1 id="disk2SizeText" className="welcome"><u>Size:</u></h1>
-
-                    <h1 id="disk2FreeText" className="welcome"><u>Free:</u></h1>
-
-                    <h1 id="disk2UsedText" className="welcome"><u>Used:</u></h1>
-
-                    <hr id="diskLine"/>
-
-                    <h1 id="disk3TypeText" className="welcome"><u>Type:</u></h1>
-
-                    <h1 id="disk3SizeText" className="welcome"><u>Size:</u></h1>
-
-                    <h1 id="disk3FreeText" className="welcome"><u>Free:</u></h1>
-
-                    <h1 id="disk3UsedText" className="welcome"><u>Used:</u></h1>
+                    
 
                 </div>
 
