@@ -41,7 +41,7 @@ app.get('/machineid/:username', (req, res) => {
 })
 
 app.get('/machineinfo/:id', (req, res) => {
-  dbroutes.getMachineInfo(req.params.username)
+  dbroutes.getMachineInfo(req.params.id)
   .then(response => {
     res.status(200).send(response);
   })
