@@ -19,10 +19,43 @@ const getUsers = () => {
   }) 
 }
 
+const getUUID = () => {
+  return new Promise(function(resolve, reject) {
+    pool.query('SELECT "machineID" FROM "Machine"', (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(results.rows)
+    })
+  }) 
+}
+
+const getMachineID = (username) => {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT "machineID" FROM "User" u, "UserMachine" um WHERE u.username = $1 and u."userID" = um."userID"`, [username], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(results.rows)
+    })
+  }) 
+}
+
+
+const getMachineInfo = (id) => {
+  return new Promise(function(resolve, reject) {
+    pool.query('SELECT * FROM "Machine" m WHERE "machineID" = $1', [id], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(results.rows)
+    })
+  }) 
+}
 
 const getCPUs = (id) => {
   return new Promise(function(resolve, reject) {
-    pool.query('SELECT * FROM "CPU" where "machineID = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM "CPU" cpu1 WHERE "dateTime" = (SELECT MAX("dateTime") FROM "CPU" cpu2 WHERE cpu1."machineID" = cpu2."machineID") and "machineID" = $1', [id], (error, results) => {
       if (error) {
         reject(error)
       }
@@ -33,7 +66,7 @@ const getCPUs = (id) => {
 
 const getGPUs = (id) => {
   return new Promise(function(resolve, reject) {
-    pool.query('SELECT * FROM "GPU" where "machineID = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM "GPU" gpu1 WHERE "dateTime" = (SELECT MAX("dateTime") FROM "GPU" gpu2 WHERE gpu1."machineID" = gpu2."machineID") and "machineID" = $1', [id], (error, results) => {
       if (error) {
         reject(error)
       }
@@ -44,7 +77,7 @@ const getGPUs = (id) => {
 
 const getDisks = (id) => {
   return new Promise(function(resolve, reject) {
-    pool.query('SELECT * FROM "Disk" where "machineID = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM "Disk" disk1 WHERE "dateTime" = (SELECT MAX("dateTime") FROM "Disk" disk2 WHERE disk1."machineID" = disk2."machineID") and "machineID" = $1', [id], (error, results) => {
       if (error) {
         reject(error)
       }
@@ -55,7 +88,7 @@ const getDisks = (id) => {
 
 const getMemory = (id) => {
   return new Promise(function(resolve, reject) {
-    pool.query('SELECT * FROM "Memory" where "machineID = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM "Memory" mem1 WHERE "dateTime" = (SELECT MAX("dateTime") FROM "Memory" mem2 WHERE mem1."machineID" = mem2."machineID") and "machineID" = $1', [id], (error, results) => {
       if (error) {
         reject(error)
       }
@@ -102,6 +135,19 @@ const createUser = (body) => {
   })
 }
 
+const createUserMachine = (body) => {
+  return new Promise(function(resolve, reject) {
+    const { uid, mid } = body
+
+    pool.query('INSERT INTO "UserMachine" ("userID", "machineID", "dateTime") VALUES ($1, $2, to_timestamp($3/1000.0)) RETURNING *', [uid, mid, Date.now()], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(results.rows)
+    })
+  })
+}
+
 const createNewMachine = (body) => {
   return new Promise(function(resolve, reject) {
     const { id, manufacturer, os, model } = body;
@@ -109,6 +155,7 @@ const createNewMachine = (body) => {
       if (error) {
         reject(error)
       }
+      resolve(results.rows)
     })
   })
 }
@@ -167,7 +214,7 @@ const deleteUser = (userId) => {
   return new Promise(function(resolve, reject) {
     const id = parseInt(userId)
 
-    pool.query('DELETE FROM "User" WHERE id = $1', [id], (error, results) => {
+    pool.query('DELETE FROM "User" WHERE "userID" = $1', [id], (error, results) => {
       if (error) {
         reject(error)
       }
@@ -191,4 +238,8 @@ module.exports = {
   retrieveMemoryMetrics,
   userExists,
   deleteUser,
+  createUserMachine,
+  getUUID,
+  getMachineID,
+  getMachineInfo
 }

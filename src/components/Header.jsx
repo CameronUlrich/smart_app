@@ -6,6 +6,8 @@ import cookie from 'react-cookies';
 import UserLogin from './UserLogin';
 import __username__ from '../globals.js';
 
+const db = require('./services/dbhelper')
+
 /*
 import { library } from '@fortawesome/fontawesome-svg-core'
 //import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -25,6 +27,15 @@ library.add( faUser, faUsers, faUserFriends, faCog, faUserShield, faHome, faSign
 
 class Header extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            machineID: '',
+            machineMan: '',
+            machineModel: ''
+        };
+    }
+
     /* istanbul ignore next */
     resetCookies = () => {
         cookie.save('is_logged_in', false, {path: '/'});
@@ -36,6 +47,33 @@ class Header extends Component {
         cookie.remove('username');
         cookie.save('is_logged_in', false, {path: '/'});
         console.log("logged out");
+    }
+
+    async componentDidMount(){
+        const machine = await db.getMachine(cookie.load("username"));
+        const userjson = await machine.json();
+
+        const machineinfo = await db.getMachineInfo(userjson[0].machineID)
+        const machinejson = await machineinfo.json();
+
+        console.log(machinejson[0].machineID)
+        console.log(machinejson)
+
+        this.state.machineID = machinejson[0].machineID
+        this.state.machineMan = machinejson[0].machineMake
+        this.state.machineModel =  machinejson[0].machineModel
+
+
+
+        this.changeMachineState()
+        console.log(this.state.machineID)
+    }
+
+    changeMachineState(){
+        this.setState({"machineInfo": this.state.machineID})
+        this.setState({"machineInfo": this.state.machineModel})
+        this.setState({"machineInfo": this.state.machineMan})
+        console.log(this.state.machineID)
     }
 
     /*
@@ -57,7 +95,7 @@ class Header extends Component {
                         <Link to="/home" id= "smartText" className="homeText">SMART</Link>
 
 
-                        <h1 id="machineInfo">Hello {cookie.load("username")}! <u>Machine ID:</u> <u>Manufacturer:</u> <u>Model:</u></h1>
+                        <h1 id="machineInfo">Hello {cookie.load("username")}! <u>Machine ID:</u> {this.state.machineID} <u>Manufacturer:</u> {this.state.machineMan} <u>Model:</u> {this.state.machineModel}</h1>
 
 
                         <Link to="/" className="logOutBtn" onClick={this.resetCookies}>Log Out</Link>

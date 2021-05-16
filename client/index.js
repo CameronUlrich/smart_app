@@ -1,5 +1,21 @@
 const si = require('systeminformation');
 const db = require('./services/dbhelper');
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
+
+
+var answer = false;
+readline.question(`What's your username?`, username => {
+  readline.question(`What's your password?`, password => {
+
+    console.log(username + password)
+    registerMachine(username, password);
+    
+    readline.close()
+  })
+})
 
 var round = 0;
 
@@ -12,20 +28,67 @@ function retrieveMetrics(){
 }
 
 // registers a new machine
-async function registerMachine() {
+async function registerMachine(username, password) {
     try {
+      isRegistered = false;
+      isLoggedIn = false
       const machinedata = await si.system();
       const machineos = await si.osInfo();
-      db.registerMachine(machinedata.uuid, 
-        machinedata.manufacturer, 
-        machineos.platform, 
-        machinedata.model);
+      const response = await db.getUUID();
+      const uuidjson = await response.json();
+      const users = await db.getUsers();
+      const userjson = await users.json();
+      var round = 0;
+
+      console.log(machinedata)
+      console.log(uuidjson)
+      console.log(round)
+        
+      uuidjson.forEach(row => {
+        if(row.machineID === machinedata.uuid) {
+          isRegistered = true
+        }
+      })
+      
+      console.log(isRegistered)
+      if (!isRegistered){
+        db.registerMachine(machinedata.uuid, 
+          machinedata.manufacturer, 
+          machineos.platform, 
+          machinedata.model);
+          //this.state.machineid = json.machineID;
+        
+
+        userjson.forEach(row => {
+          if (username === row.username && password === row.password){
+            console.log(row)
+            db.registerUserMachine(row.userID, machinedata.uuid)
+          }
+          else {
+            console.log("Username or passoword is incorrect, please try again.")
+          }
+        })
+      }
+
+      userjson.forEach(row => {
+        if (username === row.username && password === row.password){
+          isLoggedIn = true;
+        }        
+      })
+
+      if(isLoggedIn){
+        setInterval(function() {
+          retrieveSystemMetrics(round);
+          round++;
+        }, 10000);
+      }
+
+
       
     } catch (e) {
       console.log(e)
     }
   }
-
 // retrieves all of the system information 
 async function retrieveSystemMetrics(round) {
   try {
@@ -45,7 +108,7 @@ async function retrieveSystemMetrics(round) {
 
     console.log('Machine Information:');
     console.log('- machine id: ' + machinedata.uuid);
-    console.log('- manudacturer: ' + machinedata.manufacturer);
+    console.log('- manufacturer: ' + machinedata.manufacturer);
     console.log('- model: ' + machinedata.model);
     console.log('...\n');
 
@@ -68,7 +131,7 @@ async function retrieveSystemMetrics(round) {
         gpudata.controllers[0].clockCore/1.0, 
         gpudata.controllers[0].temperatureGpu/1.0, 
         gpudata.controllers[0].memoryTotal/1024.0,
-        gpudata.controllers[0].memoryUsed/1024.0);
+        Math.round(gpudata.controllers[0].memoryUsed/1024.0 * 100) / 100);
     console.log('GPU Information:');
     console.log('- manufucturer: ' + gpudata.controllers[0].vendor);
     console.log('- model: ' + gpudata.controllers[0].model);
@@ -78,9 +141,9 @@ async function retrieveSystemMetrics(round) {
     console.log('...\n');
 
     db.retrieveMemoryMetrics(machinedata.uuid,
-        memorydata.total/1073741824.0,
-        memorydata.free/1073741824.0,
-        memorydata.used/1073741824.0)
+        Math.round(memorydata.total/1073741824.0 * 100) / 100,
+        Math.round(memorydata.free/1073741824.0 * 100) / 100,
+        Math.round(memorydata.used/1073741824.0 * 100) / 100)
     console.log('Memory Information:');
     console.log('- total: ' + memorydata.total/1073741824.0 + " GB");
     console.log('- free: ' + memorydata.free/1073741824.0 + " GB");
@@ -90,9 +153,9 @@ async function retrieveSystemMetrics(round) {
     for (var i = 0; i < diskdata.length; i ++){
         db.retrieveDiskMetrics(machinedata.uuid, 
             diskname[i].type, 
-            diskdata[i].size/1073741824.0, 
-            diskdata[i].free/1073741824.0, 
-            diskdata[i].used/1073741824.0);
+            Math.round(diskdata[i].size/1073741824.0 * 100) / 100, 
+            Math.round(diskdata[i].free/1073741824.0 * 100) / 100, 
+            Math.round(diskdata[i].used/1073741824.0 * 100) / 100);
         console.log('Disk ' + i  + ' Information:');
         console.log('- name: ' + diskname[i].name);
         console.log('- type: ' + diskname[i].type);
@@ -133,9 +196,3 @@ async function retrieveSystemMetrics(round) {
     console.log(e)
   }
 }
-
-registerMachine();
-setInterval(function() {
-    retrieveSystemMetrics(round);
-    round++;
-  }, 10000);

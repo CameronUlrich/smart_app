@@ -19,8 +19,40 @@ function deleteUser(username) {
     })
 }
 
+function getCpu (machineID) {
+    return fetch(`http://localhost:3001/cpu/${machineID}`)
+}
+
+function getMachine(username){
+    return fetch(`http://localhost:3001/machineid/${username}`)
+}
+
+function getDisk (machineID) {
+    return fetch(`http://localhost:3001/disk/${machineID}`)
+}
+
+function getMemory (machineID) {
+    return fetch(`http://localhost:3001/memory/${machineID}`)
+}
+
+function getGpu(machineID) {
+    return fetch(`http://localhost:3001/gpu/${machineID}`)
+}
+
+function getMachineInfo(machineID) {
+    return fetch(`http://localhost:3001/machineinfo/${machineID}`)
+}
+
+
+
 module.exports = {
     getUsers,
     createUser,
-    deleteUser
+    deleteUser,
+    getMachine,
+    getCpu,
+    getDisk,
+    getMemory,
+    getGpu,
+    getMachineInfo
 }

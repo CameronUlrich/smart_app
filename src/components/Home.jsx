@@ -7,6 +7,8 @@ import '../globals.js';
 import cookie from 'react-cookies';
 import { Redirect, Route } from 'react-router-dom';
 
+const db = require('./services/dbhelper')
+
 /*
 [1] ================================================
 [1] =============Metric Collection Begin============
@@ -69,7 +71,118 @@ import { Redirect, Route } from 'react-router-dom';
 */
 
 
+
+
 class Home extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            manufacturer: '',
+            speed: 0,
+            core: 0,
+            physicalcores: 0,
+            current: 0.0,
+            gpuMan: '',
+            gputemp: 0,
+            gpucoreclock: 0,
+            gpuMemory: 0,
+            memoryTotal: 0,
+            memoryFree: 0,
+            memoryUsed: 0,
+            disk: []
+        };
+    }
+
+    
+
+    async onRefresh(){
+        const machine = await db.getMachine(cookie.load("username"));
+        const userjson = await machine.json();
+        
+        const cpu = await db.getCpu(userjson[0].machineID)
+        const cpujson = await cpu.json();
+
+        const gpu = await db.getGpu(userjson[0].machineID)
+        const gpujson = await gpu.json();
+
+        const disk = await db.getDisk(userjson[0].machineID)
+        const diskjson = await disk.json();
+
+        const memory = await db.getMemory(userjson[0].machineID)
+        const memoryjson = await memory.json()
+
+        this.state.manufacturer = cpujson[0].cpuModel
+        this.state.speed = cpujson[0].cpuSpeed
+        this.state.core = cpujson[0].cpuCoreCount
+        this.state.current = cpujson[0].cpuPercent
+
+        this.state.gpuMan = gpujson[0].gpuModel
+        this.state.gputemp = gpujson[0].gpuTemp
+        this.state.gpucoreclock = gpujson[0].gpuSpeed
+        this.state.gpuMemory = gpujson[0].gpuMemoryUsed
+
+        this.state.memoryTotal = memoryjson[0].memorySize
+        this.state.memoryFree = memoryjson[0].memoryFree
+        this.state.memoryUsed = memoryjson[0].memoryUsed
+
+        this.setState({disk: diskjson})
+
+
+        this.changeCPUState()
+        this.changeGPUState()
+        this.changeMemoryState()
+     }
+
+     async componentDidMount() {
+        const thisBoundedRefresh = this.onRefresh.bind(this);
+        this.interval = setInterval(thisBoundedRefresh, 5000);
+     }
+
+     componentWillUnmount() {
+         clearInterval(this.interval)
+     }
+
+     async interval(){
+         this.intervalId = setInterval(console.log("hello"),5000)
+     }
+
+    changeCPUState(){
+        this.setState({"cpuManText": this.state.manufacturer})
+        this.setState({"cpuSpeedText": this.state.speed})
+        this.setState({"cpuPhysCoreText": this.state.core})
+        this.setState({"cpuCurrentText": this.state.current})
+    }
+
+    changeGPUState(){
+        this.setState({"gpuManText": this.state.gpuMan})
+        this.setState({"gpuTempText": this.state.gputemp})
+        this.setState({"gpuCoreText": this.state.gpucoreclock})
+        this.setState({"gpuMemoryText": this.state.gpuMemory})
+    }
+
+    changeMemoryState(){
+        this.setState({"memoryTotalText": this.state.memorySize})
+        this.setState({"memoryFreeText": this.state.memoryFree})
+        this.setState({"memoryUsedText": this.state.gpucoreclock})
+    }
+
+     // updates the password with whatever is in the password field
+    /* istanbul ignore next */
+    changeState(e) {
+        this.setState({
+            [e.target.id]: e.target.value
+        })
+    }
+     
+     /* istanbul ignore next */
+    handleClick(e) {
+        console.log('The button was clicked.');
+        this.onRefresh();
+        
+    }
+
+
 
     render() {
 
@@ -101,17 +214,13 @@ class Home extends Component {
                 <div id="cpuDiv">
                     <h1 id="cpuText" className="welcome">CPU</h1>
 
-                    <h1 id="cpuManText" className="welcome"><u>Manufacturer:</u></h1>
+                    <h1 id="cpuManText" className="welcome"><u>Manufacturer:</u> {this.state.manufacturer}</h1>
 
-                    <h1 id="cpuBrandText" className="welcome"><u>Brand:</u></h1>
+                    <h1 id="cpuSpeedText" className="welcome"><u>Speed:</u> {this.state.speed}</h1>
 
-                    <h1 id="cpuSpeedText" className="welcome"><u>Speed:</u></h1>
+                    <h1 id="cpuPhysCoreText" className="welcome"><u>Physical Cores:</u> {this.state.core}</h1>
 
-                    <h1 id="cpuCoreText" className="welcome"><u>Core:</u></h1>
-
-                    <h1 id="cpuPhysCoreText" className="welcome"><u>Physical Cores:</u></h1>
-
-                    <h1 id="cpuCurrentText" className="welcome"><u>Current:</u></h1>
+                    <h1 id="cpuCurrentText" className="welcome"><u>Current:</u> {this.state.current}</h1>
 
                                        
 
@@ -127,11 +236,11 @@ class Home extends Component {
                 <div id="memoryDiv">
                     <h1 id="memoryText" className="welcome">Memory</h1>
 
-                    <h1 id="memoryTotalText" className="welcome"><u>Total:</u></h1>
+                    <h1 id="memoryTotalText" className="welcome"><u>Total:</u> {this.state.memoryTotal} GB</h1>
 
-                    <h1 id="memoryFreeText" className="welcome"><u>Free:</u></h1>
+                    <h1 id="memoryFreeText" className="welcome"><u>Free:</u> {this.state.memoryFree} GB</h1>
 
-                    <h1 id="memoryUsedText" className="welcome"><u>Used:</u></h1>
+                    <h1 id="memoryUsedText" className="welcome"><u>Used:</u> {this.state.memoryUsed} GB</h1>
 
 
                 </div>
@@ -147,15 +256,13 @@ class Home extends Component {
                 <div id="gpuDiv">
                     <h1 id="gpuText" className="welcome">GPU</h1>
 
-                    <h1 id="gpuManText" className="welcome"><u>Manufacturer:</u></h1>
+                    <h1 id="gpuManText" className="welcome"><u>Manufacturer:</u> {this.state.gpuMan}</h1>
 
-                    <h1 id="gpuModelText" className="welcome"><u>Model:</u></h1>
+                    <h1 id="gpuTempText" className="welcome"><u>Temperature:</u> {this.state.gputemp}</h1>
 
-                    <h1 id="gpuTempText" className="welcome"><u>Temperature:</u></h1>
+                    <h1 id="gpuCoreText" className="welcome"><u>Core Clock:</u> {this.state.gpucoreclock}</h1>
 
-                    <h1 id="gpuCoreText" className="welcome"><u>Core Clock:</u></h1>
-
-                    <h1 id="gpuMemoryText" className="welcome"><u>Memory:</u></h1>
+                    <h1 id="gpuMemoryText" className="welcome"><u>Memory:</u> {this.state.gpuMemory} GB</h1>
 
 
                 </div>
@@ -173,6 +280,13 @@ class Home extends Component {
 
                 <div id="diskDiv" class="line">
                     
+                <ol>
+                    {
+                        this.state.disk.map((item, key) => {
+                            return <li key={key}><h1>Disk Size: {item.diskSize} Disk Used: {item.diskUsed} </h1></li>
+                        })
+                    }
+                </ol>
 
                     <h1 id="disk0TypeText" className="welcome"><u>Type:</u></h1>
 
@@ -214,7 +328,7 @@ class Home extends Component {
 
                 </div>
 
-                <button id="refreshBtn">Refresh</button>
+                <button id="refreshBtn" onClick={e => this.handleClick(e)}>Refresh</button>
 
                 <div id="refreshDiv">
 
