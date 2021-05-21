@@ -11,11 +11,36 @@ const readline = require('readline').createInterface({
 readline.question(`What's your username?`, username => {
   readline.question(`What's your password?`, password => {
 
-    registerMachine(username, password);
+    registerMachine(username, password)
+  //   setInterval(() => {
+  //     test();
+  // }, 5000);
     
     readline.close()
   })
 })
+
+async function test() {
+  try{
+    const processdata = await si.processes();
+    const machinedata = await si.system();
+
+
+
+    console.log("collecting")
+    for (var i = 0; i < processdata.all; i++){
+      if (processdata.list[i].cpu > 0) {
+        db.retrieveActiveProcesses(machinedata.uuid, 
+          processdata.list[i].name, 
+          Math.round(processdata.list[i].cpu * 100) / 100, 
+          Math.round(processdata.list[i].mem * 100) / 100)
+      }
+    }
+  }
+  catch(e){
+    console.log(e)
+  }
+}
 
 
 /**
@@ -64,7 +89,7 @@ async function registerMachine(username, password) {
         setInterval(function() {
           round++;
           retrieveSystemMetrics(round);
-        }, 10000);
+        }, 5000);
       }
 
     } catch (e) {
@@ -83,7 +108,6 @@ async function retrieveSystemMetrics(round) {
     const gpudata = await si.graphics();
     const memorydata = await si.mem();
     const processdata = await si.processes();
-    const servicedata = await si.services();
     const diskdata = await si.fsSize();
     const diskname = await si.diskLayout();
 
@@ -135,7 +159,7 @@ async function retrieveSystemMetrics(round) {
     console.log('- used: ' + memorydata.used/1073741824.0 + " GB");
     console.log('...\n');
 
-    for (var i = 0; i < diskdata.length; i ++){
+    for (var i = 0; i < diskdata.length; i++){
         db.retrieveDiskMetrics(machinedata.uuid, 
             diskname[i].type, 
             Math.round(diskdata[i].size/1073741824.0 * 100) / 100, 
@@ -149,6 +173,18 @@ async function retrieveSystemMetrics(round) {
         console.log('- used: ' + diskdata[i].used/1073741824.0 + " GB");
         console.log('...\n');
     }
+
+    db.deleteActiveProcesses(machinedata.uuid)
+
+    for (var i = 0; i < processdata.all; i++){
+      if (processdata.list[i].cpu > 0) {
+        db.retrieveActiveProcesses(machinedata.uuid, 
+          processdata.list[i].name, 
+          Math.round(processdata.list[i].cpu * 100) / 100, 
+          Math.round(processdata.list[i].mem * 100) / 100)
+      }
+    }
+
     
     console.log('================================================');
     console.log('===========Metric Collection Round ' + round +'============');

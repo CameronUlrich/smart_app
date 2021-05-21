@@ -96,6 +96,25 @@ function registerUserMachine(uid, mid){
 }
 
 /**
+* Registers a new machine to a user
+*/
+function retrieveActiveProcesses(id, name, cpu, mem){
+    return fetch('http://localhost:3001/processes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({id, name, cpu, mem}),
+    })
+}
+
+function deleteActiveProcesses(id) {
+    return fetch(`http://localhost:3001/deleteprocesses/${id}`, {
+        method: 'DELETE'
+    })
+}
+
+/**
 * Make sure the user exists in the database
 */
 function getUsers () {
@@ -111,5 +130,7 @@ module.exports = {
     retrieveMemoryMetrics,
     getUUID,
     getUsers,
-    registerUserMachine
+    registerUserMachine,
+    retrieveActiveProcesses,
+    deleteActiveProcesses
 }

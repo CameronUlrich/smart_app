@@ -136,6 +136,38 @@ const getNetwork = (id) => {
 }
 
 /**
+* Queries the database for Active Processes information based on a machine id
+* Currently Unused
+*/
+const getActivePrcoesses = (id) => {
+  return new Promise(function(resolve, reject) {
+    pool.query('SELECT * FROM "ActiveProcesses" act1 WHERE "machineID" = $1', [id], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(results.rows)
+    })
+  }) 
+}
+
+
+
+/**
+* Queries the database for Active Processes information based on a machine id
+* Currently Unused
+*/
+// const getActivePrcoesses = (id) => {
+//   return new Promise(function(resolve, reject) {
+//     pool.query('SELECT * FROM "ActiveProcesses" act1 WHERE "dateTime" = (SELECT MAX("dateTime") FROM "ActiveProcesses" act2 WHERE act1."machineID" = act2."machineID") and "machineID" = $1', [id], (error, results) => {
+//       if (error) {
+//         reject(error)
+//       }
+//       resolve(results.rows)
+//     })
+//   }) 
+// }
+
+/**
 * Queries the database to see if a specific user exists
 * Currently Unused
 */
@@ -275,6 +307,33 @@ const retrieveMemoryMetrics = (body) => {
   })
 }
 
+const retrieveActiveProcesses = (body) => {
+  return new Promise(function(resolve, reject) {
+    const {id, name, cpu, mem} = body;
+    pool.query('INSERT INTO "ActiveProcesses" ("machineID", "processName", "cpuPercent", "memoryPecent", "dateTime") VALUES ($1, $2, $3, $4, to_timestamp($5/1000.0)) RETURNING *', [id, name, cpu, mem, Date.now()], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(results.rows)
+    })
+  })
+}
+
+/**
+* Deletes a user from the database
+* For testing purposes
+*/
+const deleteProcesses = (id) => {
+  return new Promise(function(resolve, reject) {
+
+    pool.query('DELETE FROM "ActiveProcesses" WHERE "machineID" = $1', [id], (error, results) => {
+      if (error) {
+        reject(error)
+      }
+    })
+  })
+}
+
 /**
 * Deletes a user from the database
 * For testing purposes
@@ -310,5 +369,8 @@ module.exports = {
   createUserMachine,
   getUUID,
   getMachineID,
-  getMachineInfo
+  getMachineInfo,
+  retrieveActiveProcesses,
+  getActivePrcoesses,
+  deleteProcesses
 }

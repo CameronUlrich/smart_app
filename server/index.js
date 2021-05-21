@@ -100,6 +100,17 @@ app.get('/network/:id', (req, res) => {
   })
 })
 
+app.get('/activeProcesses/:id', (req, res) => {
+  dbroutes.getActivePrcoesses(req.params.id)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+
 app.get('/users', (req, res) => {
   dbroutes.userExists(req.body)
   .then(response => {
@@ -189,6 +200,27 @@ app.post('/networkMetrics', (req, res) => {
     res.status(500).send(error);
   })
 })
+
+app.post('/processes', (req, res) => {
+  dbroutes.retrieveActiveProcesses(req.body)
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
+app.delete('/deleteprocesses', (req, res) => {
+  dbroutes.deleteProcesses()
+  .then(response => {
+    res.status(200).send(response);
+  })
+  .catch(error => {
+    res.status(500).send(error);
+  })
+})
+
 
 app.delete('/users/:id', (req, res) => {
   dbroutes.deleteUser(req.params.id)

@@ -70,6 +70,10 @@ function getMachineInfo(machineID) {
     return fetch(`http://localhost:3001/machineinfo/${machineID}`)
 }
 
+function getActivePrcoesses(machineID) {
+    return fetch(`http://localhost:3001/activeProcesses/${machineID}`)
+}
+
 
 
 module.exports = {
@@ -81,5 +85,6 @@ module.exports = {
     getDisk,
     getMemory,
     getGpu,
-    getMachineInfo
+    getMachineInfo,
+    getActivePrcoesses
 }
