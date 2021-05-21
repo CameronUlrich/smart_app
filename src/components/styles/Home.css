@@ -446,6 +446,9 @@
 
 #processesText{
     font-size: 50px;
+    position: relative;
+    left: -150px;
+    top: -25px;
     
     
     
@@ -475,6 +478,36 @@
     
     font-size: 35px;
     
+}
+
+#tableTest {
+    
+    background-color: transparent;
+}
+
+#fullTable{
+    position: relative;
+    top: -50px;
+    left: -150px;
+    width: 500px;
+    height: 700px;
+    background-color: transparent;
+}
+
+
+#fullTable th{
+    font-size: 16px;
+    color: white;
+    background-color: rgb(58, 58, 255);
+    border: 0.1px solid rgb(255, 255, 255);
+    font-weight: bold;
+}
+
+#fullTable td{
+    font-size: 16px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.432);
+    border: 0.1px solid rgb(255, 255, 255);
 }
 
 
