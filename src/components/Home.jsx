@@ -363,12 +363,12 @@ class Home extends Component {
 
                     <h1 id="processesText" className="welcome">Processes</h1>
 
-                    <TableContainer component={Paper}>
-                        <Table stickyHeader aria-label="sticky table">
+                    <TableContainer id="fullTable" component={Paper}>
+                        <Table id="tableTest" stickyHeader aria-label="sticky table">
 
-                            <TableHead>
+                            <TableHead id="tableHead">
 
-                                <TableRow>
+                                <TableRow id="tableHeader">
 
                                     <TableCell>Name</TableCell>
 
@@ -394,9 +394,9 @@ class Home extends Component {
 
                                             </TableCell>
 
-                                            <TableCell align="right">{p.cpuPercent}</TableCell>
+                                            <TableCell align="right">{p.cpuPercent}%</TableCell>
 
-                                            <TableCell align="right">{p.memoryPecent}</TableCell>
+                                            <TableCell align="right">{p.memoryPecent}%</TableCell>
                                         </TableRow>
 
                                     })
