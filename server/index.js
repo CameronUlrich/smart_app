@@ -211,8 +211,8 @@ app.post('/processes', (req, res) => {
   })
 })
 
-app.delete('/deleteprocesses', (req, res) => {
-  dbroutes.deleteProcesses()
+app.delete('/deleteprocesses/:id', (req, res) => {
+  dbroutes.deleteProcesses(req.params.id)
   .then(response => {
     res.status(200).send(response);
   })

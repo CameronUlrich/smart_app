@@ -6,6 +6,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import '../globals.js';
 import cookie from 'react-cookies';
 import { Redirect, Route } from 'react-router-dom';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 const db = require('./services/dbhelper')
 
@@ -94,34 +101,35 @@ class Home extends Component {
             memoryFree: 0,
             memoryUsed: 0,
             disk: [],
-            refeshTime: 5000
+            refeshTime: 5000,
+            processes: []
         };
     }
 
-    
+
     /**
     * Calls the database for all the metrics associated with the users machine
     */
-    async onRefresh(){
+    async onRefresh() {
         const machine = await db.getMachine(cookie.load("username"));
         const userjson = await machine.json();
-        
+
         const cpu = await db.getCpu(userjson[0].machineID)
         const cpujson = await cpu.json();
-        
+
         const gpu = await db.getGpu(userjson[0].machineID)
         const gpujson = await gpu.json();
-        
+
         const disk = await db.getDisk(userjson[0].machineID)
         const diskjson = await disk.json();
-        
+
         const memory = await db.getMemory(userjson[0].machineID)
         const memoryjson = await memory.json()
-        
+
         const processes = await db.getActivePrcoesses(userjson[0].machineID)
         const processesjson = await processes.json()
 
-        
+
         console.log(processesjson)
 
         this.state.manufacturer = cpujson[0].cpuModel
@@ -138,23 +146,26 @@ class Home extends Component {
         this.state.memoryFree = memoryjson[0].memoryFree
         this.state.memoryUsed = memoryjson[0].memoryUsed
 
-        this.setState({disk: diskjson})
+        this.setState({ disk: diskjson })
+        this.setState({ processes: processesjson })
 
 
         this.changeCPUState()
         this.changeGPUState()
         this.changeMemoryState()
-     }
+    }
+
+
 
     /**
     * On loading of page this function calls the onRefresh function and begins retrieving metrics from database 
     * on an interval.
     */
-     async componentDidMount() {
+    async componentDidMount() {
         this.onRefresh()
         const thisBoundedRefresh = this.onRefresh.bind(this);
         this.interval = setInterval(thisBoundedRefresh, 5000);
-     }
+    }
 
     /**
     * On unload of a page clears the interval refresh
@@ -172,33 +183,33 @@ class Home extends Component {
     /**
     * Changes state of cpu values on refresh
     */
-    changeCPUState(){
-        this.setState({"cpuManText": this.state.manufacturer})
-        this.setState({"cpuSpeedText": this.state.speed})
-        this.setState({"cpuPhysCoreText": this.state.core})
-        this.setState({"cpuCurrentText": this.state.current})
+    changeCPUState() {
+        this.setState({ "cpuManText": this.state.manufacturer })
+        this.setState({ "cpuSpeedText": this.state.speed })
+        this.setState({ "cpuPhysCoreText": this.state.core })
+        this.setState({ "cpuCurrentText": this.state.current })
     }
 
     /**
     * Changes state of gpu values on refresh
     */
-    changeGPUState(){
-        this.setState({"gpuManText": this.state.gpuMan})
-        this.setState({"gpuTempText": this.state.gputemp})
-        this.setState({"gpuCoreText": this.state.gpucoreclock})
-        this.setState({"gpuMemoryText": this.state.gpuMemory})
+    changeGPUState() {
+        this.setState({ "gpuManText": this.state.gpuMan })
+        this.setState({ "gpuTempText": this.state.gputemp })
+        this.setState({ "gpuCoreText": this.state.gpucoreclock })
+        this.setState({ "gpuMemoryText": this.state.gpuMemory })
     }
 
     /**
     * Changes state of memory values on refresh
     */
-    changeMemoryState(){
-        this.setState({"memoryTotalText": this.state.memorySize})
-        this.setState({"memoryFreeText": this.state.memoryFree})
-        this.setState({"memoryUsedText": this.state.gpucoreclock})
+    changeMemoryState() {
+        this.setState({ "memoryTotalText": this.state.memorySize })
+        this.setState({ "memoryFreeText": this.state.memoryFree })
+        this.setState({ "memoryUsedText": this.state.gpucoreclock })
     }
 
-    
+
     /**
     * On click of the refresh button, refreshes the page
     */
@@ -206,7 +217,7 @@ class Home extends Component {
         this.onRefresh();
         // clearInterval(this.interval)
     }
-    
+
     /**
     * Changes state of field on change of the input
     */
@@ -223,14 +234,14 @@ class Home extends Component {
     render() {
 
         if (cookie.load('is_logged_in') === 'false' || cookie.load('is_logged_in') === undefined) {
-            
+
             return <Redirect to='/' />
         }
-        return(
+        return (
             <div>
                 <Header />
 
-                <ToastContainer style={{fontSize: "20px", width: "450px", top: "100px" }} />
+                <ToastContainer style={{ fontSize: "20px", width: "450px", top: "100px" }} />
 
                 <Helmet>
                     <style>{'body { background-color: #282c34; }'}</style>
@@ -245,7 +256,7 @@ class Home extends Component {
                     [1] - physical cores: 4
                     [1] ...*/}
 
-                
+
 
                 <div id="cpuDiv">
                     <h1 id="cpuText" className="welcome">CPU</h1>
@@ -258,7 +269,7 @@ class Home extends Component {
 
                     <h1 id="cpuCurrentText" className="welcome"><u>Current Load:</u> {this.state.current}%</h1>
 
-                                       
+
 
 
                 </div>
@@ -315,16 +326,16 @@ class Home extends Component {
                 </div>
 
                 <div id="diskDiv" class="line">
-                    
-                <ol>
-                    {
-                        this.state.disk.map((item, key) => {
-                            return <li id="diskList" key={key}><h1 id="diskMap"><u>Disk Size:</u> {item.diskSize} GB <br></br> <u>Disk Used:</u> {item.diskUsed} GB <hr id="diskLine"/> </h1></li>
-                        })
-                    }
-                </ol>
 
-                    
+                    <ol>
+                        {
+                            this.state.disk.map((item, key) => {
+                                return <li id="diskList" key={key}><h1 id="diskMap"><u>Disk Size:</u> {item.diskSize} GB <br></br> <u>Disk Used:</u> {item.diskUsed} GB <hr id="diskLine" /> </h1></li>
+                            })
+                        }
+                    </ol>
+
+
 
                 </div>
 
@@ -351,11 +362,57 @@ class Home extends Component {
                 <div id="processDiv">
 
                     <h1 id="processesText" className="welcome">Processes</h1>
+
+                    <TableContainer component={Paper}>
+                        <Table stickyHeader aria-label="sticky table">
+
+                            <TableHead>
+
+                                <TableRow>
+
+                                    <TableCell>Name</TableCell>
+
+                                    <TableCell align="right">Cpu Usage</TableCell>
+
+                                    <TableCell align="right">Memory Usage</TableCell>
+
+                                </TableRow>
+
+                            </TableHead>
+
+                            <TableBody id='processesTable'>
+
+                                {
+
+                                    this.state.processes.map((p, index) => {
+
+                                        return <TableRow key={index}>
+
+                                            <TableCell component="th" scope="row">
+
+                                                {p.processName}
+
+                                            </TableCell>
+
+                                            <TableCell align="right">{p.cpuPercent}</TableCell>
+
+                                            <TableCell align="right">{p.memoryPecent}</TableCell>
+                                        </TableRow>
+
+                                    })
+
+                                }
+                            </TableBody>
+
+                        </Table>
+
+                    </TableContainer>
+
                 </div>
-                
+
             </div>
         );
-        
+
     }
 }
 
