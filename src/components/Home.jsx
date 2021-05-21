@@ -93,7 +93,8 @@ class Home extends Component {
             memoryTotal: 0,
             memoryFree: 0,
             memoryUsed: 0,
-            disk: []
+            disk: [],
+            refeshTime: 5000
         };
     }
 
@@ -107,15 +108,21 @@ class Home extends Component {
         
         const cpu = await db.getCpu(userjson[0].machineID)
         const cpujson = await cpu.json();
-
+        
         const gpu = await db.getGpu(userjson[0].machineID)
         const gpujson = await gpu.json();
-
+        
         const disk = await db.getDisk(userjson[0].machineID)
         const diskjson = await disk.json();
-
+        
         const memory = await db.getMemory(userjson[0].machineID)
         const memoryjson = await memory.json()
+        
+        const processes = await db.getActivePrcoesses(userjson[0].machineID)
+        const processesjson = await processes.json()
+
+        
+        console.log(processesjson)
 
         this.state.manufacturer = cpujson[0].cpuModel
         this.state.speed = cpujson[0].cpuSpeed
@@ -156,6 +163,12 @@ class Home extends Component {
         clearInterval(this.interval)
     }
 
+    changeRefresh() {
+        clearInterval(this.interval)
+        const thisBoundedRefresh = this.onRefresh.bind(this);
+        this.interval = setInterval(thisBoundedRefresh, this.state.refeshTime);
+    }
+
     /**
     * Changes state of cpu values on refresh
     */
@@ -191,6 +204,18 @@ class Home extends Component {
     */
     handleClick(e) {
         this.onRefresh();
+        // clearInterval(this.interval)
+    }
+    
+    /**
+    * Changes state of field on change of the input
+    */
+    changeState(e) {
+        this.state.refeshTime = e.target.value
+        this.setState({
+            "dropDownOptions": e.target.value
+        })
+        this.changeRefresh()
     }
 
 
@@ -309,17 +334,17 @@ class Home extends Component {
 
                     <h1 id="dropDownText" htmlFor="dropDownText">Refresh Rate (in seconds): </h1>
 
-                    <select name="dropDownOptions" id="dropDownOptions" defaultValue={'5'}>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
+                    <select name="dropDownOptions" id="dropDownOptions" defaultValue={this.state.onRefresh} onChange={e => this.changeState(e)}>
+                        <option value="1000">1</option>
+                        <option value="2000">2</option>
+                        <option value="3000">3</option>
+                        <option value="4000">4</option>
+                        <option value="5000">5</option>
+                        <option value="6000">6</option>
+                        <option value="7000">7</option>
+                        <option value="8000">8</option>
+                        <option value="9000">9</option>
+                        <option value="10000">10</option>
                     </select>
                 </div>
 

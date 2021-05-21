@@ -169,9 +169,9 @@ CREATE TABLE public."ActiveProcesses"
 (
     "processID" serial NOT NULL,
     "machineID" character varying(40) NOT NULL,
-    "processName" character varying(20),
+    "processName" character varying(100),
     "cpuPercent" double precision,
-    "memoryPecent" double precision,
+    "memoryPercent" double precision,
     "dateTime" timestamp without time zone NOT NULL,
     PRIMARY KEY ("processID", "dateTime"),
     CONSTRAINT "ProcessFK" FOREIGN KEY ("machineID")
