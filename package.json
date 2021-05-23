@@ -22,6 +22,7 @@
   },
   "scripts": {
     "start": "concurrently --kill-others \"npm run startup\" \"npm run server\"",
+    "all": "concurrently --kill-others \"npm run startup\" \"npm run client\" \"npm run server\"",
     "startup": "react-scripts start",
     "dev": "concurrently --kill-others \"npm run start\" \"npm run server\"",
     "server": "(cd server && npm i && npm run start)",

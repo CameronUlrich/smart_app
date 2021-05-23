@@ -345,7 +345,7 @@ class Home extends Component {
 
                     <h1 id="dropDownText" htmlFor="dropDownText">Refresh Rate (in seconds): </h1>
 
-                    <select name="dropDownOptions" id="dropDownOptions" defaultValue={this.state.onRefresh} onChange={e => this.changeState(e)}>
+                    <select name="dropDownOptions" id="dropDownOptions" defaultValue={this.state.refeshTime} onChange={e => this.changeState(e)}>
                         <option value="1000">1</option>
                         <option value="2000">2</option>
                         <option value="3000">3</option>

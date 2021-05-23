@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, withRouter} from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { render } from 'react-dom';  // need to install react-dom on server
 import { Helmet } from 'react-helmet';
 import { ToastContainer, toast } from 'react-toastify';
@@ -27,17 +27,17 @@ class UserLogin extends Component {
         };
     }
 
-    saveUsername = () =>{
+    saveUsername = () => {
         cookie.save('username', this.state.username, { path: '/' });
         //__username__ = this.state.username;
-    
+
     }
 
-    loggedInCookie = () =>{
+    loggedInCookie = () => {
         cookie.save('is_logged_in', true, { path: '/' });
     }
 
-    
+
     registerUser = () => {
         this.state.isRegister = true;
     }
@@ -56,21 +56,21 @@ class UserLogin extends Component {
     */
     userLogin(username, password) {
         fetch('http://localhost:3001')
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            data.forEach(row => {
-                if (row.username === username && row.password === password) {
-                    this.loginUser();
-                    this.state.toLoadLogin = true;
-                    console.log(this.state.toLoadLogin)
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                data.forEach(row => {
+                    if (row.username === username && row.password === password) {
+                        this.loginUser(username, password);
+                        this.state.toLoadLogin = true;
+                        console.log(this.state.toLoadLogin)
+                    }
+                });
+                if (!this.state.toLoadLogin) {
+                    alert("Wrong username or password. Please try again.");
                 }
             });
-            if (!this.state.toLoadLogin){
-                alert("Wrong username or password. Please try again.");
-            }
-        });
     }
 
     /**
@@ -84,14 +84,21 @@ class UserLogin extends Component {
     * Resets cookies on log out
     */
     resetCookies = () => {
-        cookie.save('is_logged_in', false, {path: '/'});
+        cookie.save('is_logged_in', false, { path: '/' });
         cookie.remove('username');
     }
 
     /**
     * Logs User into homepage
     */
-    loginUser = () => {
+    loginUser = (username, password) => {
+        fetch('http://localhost:3002', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        })
         this.saveUsername();
         this.loggedInCookie();
         this.props.history.push('/home');
@@ -99,11 +106,11 @@ class UserLogin extends Component {
 
     render() {
         this.resetCookies();
-        
+
 
         return (
             <div>
-                <ToastContainer style={{fontSize: "20px", width: "450px", top: "100px" }} />
+                <ToastContainer style={{ fontSize: "20px", width: "450px", top: "100px" }} />
 
                 <Helmet>
                     <style>{'body { background-color: #282c34; }'}</style>
@@ -114,15 +121,15 @@ class UserLogin extends Component {
                 <br></br>
 
                 <h1 id="welcomeText" className="welcome">Welcome to SMART!</h1>
-                
+
 
                 <input id="username" type="text" placeholder="Username" value={this.state.username} onChange={e => this.changeState(e)}></input>
 
                 <br></br>
                 <br></br>
-                
+
                 <input id="password" type="password" placeholder="Password" value={this.state.password} onChange={e => this.changeState(e)}></input>
-                
+
                 <br></br>
                 <br></br>
                 <br></br>
@@ -131,22 +138,22 @@ class UserLogin extends Component {
 
                 <h4 id="dontHaveText" className="welcome welcome2">Don't have an account?</h4>
 
-                
+
 
                 {/*<button id="registerBtn" onClick={this.registerUser}>Register</button>*/}
 
                 <Link to="/register" id="registerBtn">Sign up</Link>
 
-                
-                
-                
+
+
+
 
             </div>
 
         );
-    
+
     }
-    
+
 }
 
 export default withRouter(UserLogin);

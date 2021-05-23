@@ -1,3 +1,6 @@
+const express = require('express')
+const app = express()
+const port = 3002
 const si = require('systeminformation');
 const db = require('./services/dbhelper');
 const readline = require('readline').createInterface({
@@ -5,39 +8,54 @@ const readline = require('readline').createInterface({
   output: process.stdout
 })
 
+app.use(express.json())
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers');
+  next();
+});
+
+app.post('/', (req, res) => {
+  const { username, password } = req.body
+  console.log(req.body)
+  registerMachine(username, password)
+})
+
+
 /**
 * Asks for the users username and password before their metrics begin to be collected
 */
-readline.question(`What's your username?`, username => {
-  readline.question(`What's your password?`, password => {
+// readline.question(`What's your username?`, username => {
+//   readline.question(`What's your password?`, password => {
 
-    registerMachine(username, password)
-  //   setInterval(() => {
-  //     test();
-  // }, 5000);
-    
-    readline.close()
-  })
-})
+//     registerMachine(username, password)
+//     //   setInterval(() => {
+//     //     test();
+//     // }, 5000);
+
+//     readline.close()
+//   })
+// })
 
 async function test() {
-  try{
+  try {
     const processdata = await si.processes();
     const machinedata = await si.system();
 
 
 
     console.log("collecting")
-    for (var i = 0; i < processdata.all; i++){
+    for (var i = 0; i < processdata.all; i++) {
       if (processdata.list[i].cpu > 0) {
-        db.retrieveActiveProcesses(machinedata.uuid, 
-          processdata.list[i].name, 
-          Math.round(processdata.list[i].cpu * 100) / 100, 
+        db.retrieveActiveProcesses(machinedata.uuid,
+          processdata.list[i].name,
+          Math.round(processdata.list[i].cpu * 100) / 100,
           Math.round(processdata.list[i].mem * 100) / 100)
       }
     }
   }
-  catch(e){
+  catch (e) {
     console.log(e)
   }
 }
@@ -48,54 +66,54 @@ async function test() {
 * begins collecting new metrics for the device
 */
 async function registerMachine(username, password) {
-    try {
-      isRegistered = false;
-      isLoggedIn = false
-      const machinedata = await si.system();
-      const response = await db.getUUID();
-      const uuidjson = await response.json();
-      const users = await db.getUsers();
-      const userjson = await users.json();
-      var round = 0;
-        
-      uuidjson.forEach(row => {
-        if(row.machineID === machinedata.uuid) {
-          isRegistered = true
-        }
-      })
-      
-      if (!isRegistered){
-        db.registerMachine(machinedata.uuid);
-          //this.state.machineid = json.machineID;
-        
+  try {
+    isRegistered = false;
+    isLoggedIn = false
+    const machinedata = await si.system();
+    const response = await db.getUUID();
+    const uuidjson = await response.json();
+    const users = await db.getUsers();
+    const userjson = await users.json();
+    var round = 0;
 
-        userjson.forEach(row => {
-          if (username === row.username && password === row.password){
-            db.registerUserMachine(row.userID, machinedata.uuid)
-          }
-          
-        })
+    uuidjson.forEach(row => {
+      if (row.machineID === machinedata.uuid) {
+        isRegistered = true
       }
+    })
+
+    if (!isRegistered) {
+      db.registerMachine(machinedata.uuid);
+      //this.state.machineid = json.machineID;
+
 
       userjson.forEach(row => {
-        if (username === row.username && password === row.password){
-          isLoggedIn = true;
-          console.log("Logged in! Metrics will begin collection!")
-        }        
+        if (username === row.username && password === row.password) {
+          db.registerUserMachine(row.userID, machinedata.uuid)
+        }
+
       })
-
-      if(isLoggedIn){
-        retrieveSystemMetrics(round);
-        setInterval(function() {
-          round++;
-          retrieveSystemMetrics(round);
-        }, 5000);
-      }
-
-    } catch (e) {
-      console.log(e)
     }
+
+    userjson.forEach(row => {
+      if (username === row.username && password === row.password) {
+        isLoggedIn = true;
+        console.log("Logged in! Metrics will begin collection!")
+      }
+    })
+
+    if (isLoggedIn) {
+      retrieveSystemMetrics(round);
+      setInterval(function () {
+        round++;
+        retrieveSystemMetrics(round);
+      }, 1000);
+    }
+
+  } catch (e) {
+    console.log(e)
   }
+}
 
 /**
 * Retrieves all the system information and sends it up to the database
@@ -112,7 +130,7 @@ async function retrieveSystemMetrics(round) {
     const diskname = await si.diskLayout();
 
     console.log('================================================');
-    console.log('===========Metric Collection Round ' + round +'============');
+    console.log('===========Metric Collection Round ' + round + '============');
     console.log('================================================\n');
 
     console.log('Machine Information:');
@@ -122,10 +140,10 @@ async function retrieveSystemMetrics(round) {
     console.log('...\n');
 
 
-    db.retrieveCPUMetrics(machinedata.uuid, 
-        cpudata.manufacturer + " " + cpudata.brand,  
-        cpudata.speed, Math.round(cpuload.currentLoad * 100) / 100, 
-        cpudata.physicalCores)
+    db.retrieveCPUMetrics(machinedata.uuid,
+      cpudata.manufacturer + " " + cpudata.brand,
+      cpudata.speed, Math.round(cpuload.currentLoad * 100) / 100,
+      cpudata.physicalCores)
     console.log('CPU Information:');
     console.log('- manufacturer: ' + cpudata.manufacturer);
     console.log('- brand: ' + cpudata.brand);
@@ -134,13 +152,13 @@ async function retrieveSystemMetrics(round) {
     console.log('- percent: ' + cpuload.currentLoad);
     console.log('- physical cores: ' + cpudata.physicalCores);
     console.log('...\n');
-    
-    db.retrieveGPUMetrics(machinedata.uuid, 
-        gpudata.controllers[0].model, 
-        gpudata.controllers[0].clockCore/1.0, 
-        gpudata.controllers[0].temperatureGpu/1.0, 
-        gpudata.controllers[0].memoryTotal/1024.0,
-        Math.round(gpudata.controllers[0].memoryUsed/1024.0 * 100) / 100);
+
+    db.retrieveGPUMetrics(machinedata.uuid,
+      gpudata.controllers[0].model,
+      gpudata.controllers[0].clockCore / 1.0,
+      gpudata.controllers[0].temperatureGpu / 1.0,
+      gpudata.controllers[0].memoryTotal / 1024.0,
+      Math.round(gpudata.controllers[0].memoryUsed / 1024.0 * 100) / 100);
     console.log('GPU Information:');
     console.log('- manufucturer: ' + gpudata.controllers[0].vendor);
     console.log('- model: ' + gpudata.controllers[0].model);
@@ -150,49 +168,54 @@ async function retrieveSystemMetrics(round) {
     console.log('...\n');
 
     db.retrieveMemoryMetrics(machinedata.uuid,
-        Math.round(memorydata.total/1073741824.0 * 100) / 100,
-        Math.round(memorydata.free/1073741824.0 * 100) / 100,
-        Math.round(memorydata.used/1073741824.0 * 100) / 100)
+      Math.round(memorydata.total / 1073741824.0 * 100) / 100,
+      Math.round(memorydata.free / 1073741824.0 * 100) / 100,
+      Math.round(memorydata.used / 1073741824.0 * 100) / 100)
     console.log('Memory Information:');
-    console.log('- total: ' + memorydata.total/1073741824.0 + " GB");
-    console.log('- free: ' + memorydata.free/1073741824.0 + " GB");
-    console.log('- used: ' + memorydata.used/1073741824.0 + " GB");
+    console.log('- total: ' + memorydata.total / 1073741824.0 + " GB");
+    console.log('- free: ' + memorydata.free / 1073741824.0 + " GB");
+    console.log('- used: ' + memorydata.used / 1073741824.0 + " GB");
     console.log('...\n');
 
-    for (var i = 0; i < diskdata.length; i++){
-        db.retrieveDiskMetrics(machinedata.uuid, 
-            diskname[i].type, 
-            Math.round(diskdata[i].size/1073741824.0 * 100) / 100, 
-            Math.round(diskdata[i].free/1073741824.0 * 100) / 100, 
-            Math.round(diskdata[i].used/1073741824.0 * 100) / 100);
-        console.log('Disk ' + i  + ' Information:');
-        console.log('- name: ' + diskname[i].name);
-        console.log('- type: ' + diskname[i].type);
-        console.log('- size: ' + diskdata[i].size/1073741824.0 + " GB");
-        console.log('- free: ' + diskdata[i].available/1073741824.0 + " GB");
-        console.log('- used: ' + diskdata[i].used/1073741824.0 + " GB");
-        console.log('...\n');
+    db.deleteDiskMetrics(machinedata.uuid)
+    for (var i = 0; i < diskdata.length; i++) {
+      db.retrieveDiskMetrics(machinedata.uuid,
+        diskname[i].type,
+        Math.round(diskdata[i].size / 1073741824.0 * 100) / 100,
+        Math.round(diskdata[i].free / 1073741824.0 * 100) / 100,
+        Math.round(diskdata[i].used / 1073741824.0 * 100) / 100);
+      console.log('Disk ' + i + ' Information:');
+      console.log('- name: ' + diskname[i].name);
+      console.log('- type: ' + diskname[i].type);
+      console.log('- size: ' + diskdata[i].size / 1073741824.0 + " GB");
+      console.log('- free: ' + diskdata[i].available / 1073741824.0 + " GB");
+      console.log('- used: ' + diskdata[i].used / 1073741824.0 + " GB");
+      console.log('...\n');
     }
 
     db.deleteActiveProcesses(machinedata.uuid)
 
-    for (var i = 0; i < processdata.all; i++){
+    for (var i = 0; i < processdata.all; i++) {
       if (processdata.list[i].cpu > 0) {
-        db.retrieveActiveProcesses(machinedata.uuid, 
-          processdata.list[i].name, 
-          Math.round(processdata.list[i].cpu * 100) / 100, 
+        db.retrieveActiveProcesses(machinedata.uuid,
+          processdata.list[i].name,
+          Math.round(processdata.list[i].cpu * 100) / 100,
           Math.round(processdata.list[i].mem * 100) / 100)
       }
     }
 
-    
+
     console.log('================================================');
-    console.log('===========Metric Collection Round ' + round +'============');
+    console.log('===========Metric Collection Round ' + round + '============');
     console.log('================================================\n');
 
-    
+
 
   } catch (e) {
     console.log(e)
   }
 }
+
+app.listen(port, () => {
+  console.log(`App running on port ${port}.`)
+})
