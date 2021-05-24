@@ -3,7 +3,7 @@ const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
   host: 'smartdb.cupw72i7x6pa.us-east-1.rds.amazonaws.com',
-  database: 'test',
+  database: 'smart',
   password: 'zachary510',
   port: 5432,
 });
@@ -329,7 +329,6 @@ const retrieveActiveProcesses = (body) => {
       if (error) {
         reject(error)
       }
-      resolve(results.rows)
     })
   })
 }

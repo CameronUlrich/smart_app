@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 //import { Navbar, Nav, NavItem, NavLink } from 'reactstrap'; // need to install reactstrap on server
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'; 
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import './styles/Header.css';
 import cookie from 'react-cookies';
 import UserLogin from './UserLogin';
@@ -40,21 +40,28 @@ class Header extends Component {
     }
 
     resetCookies = () => {
-        cookie.save('is_logged_in', false, {path: '/'});
-        cookie.remove('username', {path: '/'});
-        
+        cookie.save('is_logged_in', false, { path: '/' });
+        cookie.remove('username', { path: '/' });
+
     }
 
     logOut = () => {
         cookie.remove('username');
-        cookie.save('is_logged_in', false, {path: '/'});
+        cookie.save('is_logged_in', false, { path: '/' });
         console.log("logged out");
     }
 
     /**
     * On load of a page, it gets the users machine information
-    */
-    async componentDidMount(){
+    // */
+    // async componentDidMount() {
+    //     setTimeout(function () { //Start the timer
+    //         this.getMachineID()
+
+    //     }.bind(this), 15000)
+    // }
+
+    async getMachineID() {
         const machine = await db.getMachine(cookie.load("username"));
         const userjson = await machine.json();
 
@@ -66,7 +73,7 @@ class Header extends Component {
 
         this.state.machineID = machinejson[0].machineID
         this.state.machineMan = machinejson[0].machineMake
-        this.state.machineModel =  machinejson[0].machineModel
+        this.state.machineModel = machinejson[0].machineModel
 
         this.changeMachineState()
         console.log(this.state.machineID)
@@ -75,31 +82,31 @@ class Header extends Component {
     /**
     * Sets the machine data for the page
     */
-    changeMachineState(){
-        this.setState({"machineInfo": this.state.machineID})
-        this.setState({"machineInfo": this.state.machineModel})
-        this.setState({"machineInfo": this.state.machineMan})
+    changeMachineState() {
+        this.setState({ "machineInfo": this.state.machineID })
+        this.setState({ "machineInfo": this.state.machineModel })
+        this.setState({ "machineInfo": this.state.machineMan })
         console.log(this.state.machineID)
     }
 
-    
+
 
     render() {
-        
-        return(
+
+        return (
             <div>
                 <div className="topnav">
                     <ul>
-                        
-
-                        <Link to="/home" id= "smartText" className="homeText">SMART</Link>
 
 
-                        <h1 id="machineInfo">Hello {cookie.load("username")}! <u>Machine ID:</u> {this.state.machineID} {/*<u>Manufacturer:</u> {this.state.machineMan} <u>Model:</u> {this.state.machineModel}*/}</h1>
+                        <Link to="/home" id="smartText" className="homeText">SMART</Link>
+
+
+                        <h1 id="machineInfo">Hello {cookie.load("username")}! {/*<u>Machine ID:</u> {this.state.machineID} <u>Manufacturer:</u> {this.state.machineMan} <u>Model:</u> {this.state.machineModel}*/}</h1>
 
 
                         <Link to="/" className="logOutBtn" onClick={this.resetCookies}>Log Out</Link>
-                        
+
                     </ul>
                 </div>
             </div>

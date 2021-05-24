@@ -60,6 +60,9 @@ async function test() {
   }
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 /**
 * Registers a new machine based on a given username and password or if already registered 
@@ -76,6 +79,7 @@ async function registerMachine(username, password) {
     const userjson = await users.json();
     var round = 0;
 
+    await sleep(2000)
     uuidjson.forEach(row => {
       if (row.machineID === machinedata.uuid) {
         isRegistered = true
@@ -86,14 +90,19 @@ async function registerMachine(username, password) {
       db.registerMachine(machinedata.uuid);
       //this.state.machineid = json.machineID;
 
-
+      await sleep(2000)
       userjson.forEach(row => {
+        console.log(row)
+        console.log(machinedata.uuid)
+
         if (username === row.username && password === row.password) {
           db.registerUserMachine(row.userID, machinedata.uuid)
         }
 
       })
     }
+
+    await sleep(1000)
 
     userjson.forEach(row => {
       if (username === row.username && password === row.password) {
@@ -107,7 +116,7 @@ async function registerMachine(username, password) {
       setInterval(function () {
         round++;
         retrieveSystemMetrics(round);
-      }, 1000);
+      }, 5000);
     }
 
   } catch (e) {

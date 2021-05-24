@@ -423,7 +423,43 @@
     animation: fadeIn 1s ease-out;
 }
 
+#collectBtn{
+    position:absolute;
+    left: 50px;
+    top: 900px;
+
+    outline: none;
+    padding: 10px 26px;
+    
+    border: none;
+    background-color: transparent;
+    border: 2px solid rgb(255, 255, 255);
+    
+    color: white;
+    
+    
+    font-size: 45px;
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    animation: fadeIn 1s ease-out;
+}
+
 #refreshBtn:hover{
+    border: none;
+    background-color: rgba(13, 255, 45, 0.171);
+    
+    border: 2px solid white;
+    border-radius: 25px;
+    color: white;
+    
+    
+    text-decoration: none;
+}
+
+#collectBtn:hover{
     border: none;
     background-color: rgba(13, 255, 45, 0.171);
     

@@ -13,6 +13,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { SingleBedSharp } from '@material-ui/icons';
 
 const db = require('./services/dbhelper')
 
@@ -162,9 +163,12 @@ class Home extends Component {
     * on an interval.
     */
     async componentDidMount() {
-        this.onRefresh()
-        const thisBoundedRefresh = this.onRefresh.bind(this);
-        this.interval = setInterval(thisBoundedRefresh, 5000);
+        document.getElementById("collectBtn").disabled = true;
+        setTimeout(() => {
+            document.getElementById("collectBtn").disabled = false;
+        }, 5000);
+
+
     }
 
     /**
@@ -175,6 +179,7 @@ class Home extends Component {
     }
 
     changeRefresh() {
+        this.onRefresh()
         clearInterval(this.interval)
         const thisBoundedRefresh = this.onRefresh.bind(this);
         this.interval = setInterval(thisBoundedRefresh, this.state.refeshTime);
@@ -218,6 +223,12 @@ class Home extends Component {
         // clearInterval(this.interval)
     }
 
+    handleClick2(e) {
+        this.changeRefresh();
+        // clearInterval(this.interval)
+    }
+
+
     /**
     * Changes state of field on change of the input
     */
@@ -226,7 +237,6 @@ class Home extends Component {
         this.setState({
             "dropDownOptions": e.target.value
         })
-        this.changeRefresh()
     }
 
 
@@ -339,6 +349,7 @@ class Home extends Component {
 
                 </div>
 
+                <button id="collectBtn" onClick={e => this.handleClick2(e)}>Start Collection</button>
                 <button id="refreshBtn" onClick={e => this.handleClick(e)}>Refresh</button>
 
                 <div id="refreshDiv">
